@@ -54,22 +54,26 @@ The site uses a **tabs-based** navigation pattern in `docs.json`:
 Pages must be added to `docs.json` navigation to appear in the sidebar.
 
 ### Content Organization
+This is the **CaMeL AI** Chinese-language documentation site (rebranded from AIHubMix). Top-level content directories:
 ```
 /
-├── docs.json              # Site config
+├── docs.json              # Site config (tabs: 指南 / API 参考)
 ├── index.mdx              # Homepage
-├── quickstart.mdx         # Getting started
-├── development.mdx        # Local dev guide
-├── essentials/            # Core documentation features
-├── ai-tools/              # AI tool integration guides
-├── api-reference/         # API documentation
-│   ├── introduction.mdx
-│   ├── openapi.json       # OpenAPI spec
-│   └── endpoint/          # API endpoint examples
-├── snippets/              # Reusable MDX components
+├── quick-start.mdx        # 快速开始
+├── clients/               # 第三方客户端集成 (Cherry-Studio, Cursor, Cline, Dify, ...)
+├── api/                   # API 使用文档 (auth, models, pricing, errors, ...)
+├── FAQs/                  # 常见问题
+├── blogs/                 # 博客文章
+├── update/                # 更新日志
+├── terms-and-privacy/     # 条款与隐私
 ├── images/                # Static assets
 └── logo/                  # Brand assets
 ```
+
+Note: there is no `essentials/`, `ai-tools/`, `snippets/`, or `api-reference/openapi.json` in this repo — those were template defaults. When adding pages, mirror an existing sibling under the appropriate top-level folder and register the path in `docs.json` under the matching tab/group.
+
+### Localization
+All user-facing content is Simplified Chinese. Match tone and terminology of neighboring pages (e.g., 模型, 计费, 充值, 客户端). Frontmatter `title`/`description` are also in Chinese.
 
 ## Writing Documentation
 

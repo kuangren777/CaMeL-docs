@@ -43,7 +43,7 @@ npm install -g @anthropic-ai/claude-code
 
 要通过兼容 Anthropic API 的方式来接入 CaMeL AI 的模型服务，需要配置以下环境变量。
 
-1. 将`ANTHROPIC_BASE_URL` 设置为`https://camel.kr777.top`
+1. 将`ANTHROPIC_BASE_URL` 设置为`https://api.kr777.top`
 2. `ANTHROPIC_AUTH_TOKEN` 设置为从 [CaMeL AI 平台](https://camel.kr777.top/token) 获取的 API Key
 3. `ANTHROPIC_MODEL`：设置为[模型列表](https://camel.kr777.top/models)中支持的模型。
 
@@ -60,14 +60,14 @@ npm install -g @anthropic-ai/claude-code
     <CodeGroup>
       ```shellscript Zsh theme={null}
       # CAMELAI_API_KEY 替换为你从 CaMeL AI 平台获取的 Key
-      echo 'export ANTHROPIC_BASE_URL="https://camel.kr777.top"' >> ~/.zshrc
+      echo 'export ANTHROPIC_BASE_URL="https://api.kr777.top"' >> ~/.zshrc
       echo 'export ANTHROPIC_AUTH_TOKEN="CAMELAI_API_KEY"' >> ~/.zshrc
       echo 'export ANTHROPIC_MODEL="claude-sonnet-4-5"' >> ~/.zshrc
       ```
 
       ```shellscript Bash theme={null}
       # CAMELAI_API_KEY 替换为你从 CaMeL AI 平台获取的 Key
-      echo 'export ANTHROPIC_BASE_URL="https://camel.kr777.top"' >> ~/.bash_profile
+      echo 'export ANTHROPIC_BASE_URL="https://api.kr777.top"' >> ~/.bash_profile
       echo 'export ANTHROPIC_AUTH_TOKEN="CAMELAI_API_KEY"' >> ~/.bash_profile
       echo 'export ANTHROPIC_MODEL="claude-sonnet-4-5"' >> ~/.bash_profile
       ```
@@ -104,7 +104,7 @@ npm install -g @anthropic-ai/claude-code
         ```shellscript  theme={null}
         REM CaMeL AI API Key 替换 CAMELAI_API_KEY
         setx ANTHROPIC_AUTH_TOKEN "CAMELAI_API_KEY"
-        setx ANTHROPIC_BASE_URL "https://camel.kr777.top"
+        setx ANTHROPIC_BASE_URL "https://api.kr777.top"
         setx ANTHROPIC_MODEL "claude-sonnet-4-5"
         ```
 
@@ -123,7 +123,7 @@ npm install -g @anthropic-ai/claude-code
         ```shellscript  theme={null}
         # CaMeL AI API Key 替换 CAMELAI_API_KEY
         [Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "CAMELAI_API_KEY", [EnvironmentVariableTarget]::User)
-        [Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://camel.kr777.top", [EnvironmentVariableTarget]::User)
+        [Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://api.kr777.top", [EnvironmentVariableTarget]::User)
         [Environment]::SetEnvironmentVariable("ANTHROPIC_MODEL", "claude-sonnet-4-5", [EnvironmentVariableTarget]::User)
         ```
 

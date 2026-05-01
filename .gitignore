@@ -1,0 +1,15 @@
+# Nextra reference clone (not part of this project)
+/nextra/
+
+# Node
+node_modules/
+.next/
+out/
+.turbo/
+*.log
+.DS_Store
+
+# Env
+.env
+.env.local
+.env.*.local

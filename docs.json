@@ -103,6 +103,7 @@
             "pages": [
               "api/Image-Gen",
               "api/GPT-Image-1",
+              "api/GPT-Image-2",
               "api/IdeogramAI",
               "api/Video-Gen",
               "api/vision",

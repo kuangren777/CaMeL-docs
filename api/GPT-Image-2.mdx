@@ -1,0 +1,234 @@
+---
+title: "GPT Image 2"
+description: "CaMeL AI 的 gpt-image-2 文生图接口，OpenAI 兼容格式"
+---
+
+> CaMeL AI 提供 OpenAI 兼容的 `gpt-image-2` 文生图接口，返回 Base64 编码的 PNG 图片。
+
+## 接口信息
+
+| 项目 | 值 |
+| --- | --- |
+| API 域名 | `https://camel.kr777.top` |
+| 模型名称 | `gpt-image-2` |
+| 接口类型 | OpenAI 兼容接口 |
+
+## 快速开始
+
+### 1. 获取 API Key
+
+在 [CaMeL AI 平台](https://camel.kr777.top/token) 注册并获取 API Key（格式：`sk-xxxxxx...`）。
+
+### 2. 发起请求
+
+**端点：** `POST https://camel.kr777.top/v1/images/generations`
+
+**请求头：**
+
+```http  theme={null}
+Authorization: Bearer sk-your-api-key
+Content-Type: application/json
+```
+
+**请求体：**
+
+```json  theme={null}
+{
+  "model": "gpt-image-2",
+  "prompt": "A beautiful sunset over mountains with a lake",
+  "n": 1,
+  "size": "1024x1024"
+}
+```
+
+**参数说明：**
+
+* `model`：固定为 `"gpt-image-2"`
+* `prompt`：图片描述（英文效果更好）
+* `n`：生成图片数量，默认 `1`
+* `size`：图片尺寸，支持 `"1024x1024"` 等
+
+## 代码示例
+
+<CodeGroup>
+  ```python Python theme={null}
+  import requests
+  import base64
+  from pathlib import Path
+
+  API_BASE = "https://camel.kr777.top/v1"
+  API_KEY = "sk-your-api-key"  # 替换为你的 API Key
+
+  def generate_image(prompt: str, output_file: str = "output.png"):
+      """生成图片并保存"""
+      response = requests.post(
+          f"{API_BASE}/images/generations",
+          headers={
+              "Authorization": f"Bearer {API_KEY}",
+              "Content-Type": "application/json"
+          },
+          json={
+              "model": "gpt-image-2",
+              "prompt": prompt,
+              "n": 1,
+              "size": "1024x1024"
+          },
+          timeout=120
+      )
+
+      response.raise_for_status()
+      result = response.json()
+
+      image_b64 = result['data'][0]['b64_json']
+      image_data = base64.b64decode(image_b64)
+      Path(output_file).write_bytes(image_data)
+
+      print(f"✅ 图片已保存到: {output_file}")
+      return result
+
+  generate_image(
+      prompt="A cute cat sitting on a laptop, digital art style",
+      output_file="cat_on_laptop.png"
+  )
+  ```
+
+  ```javascript Node.js theme={null}
+  const axios = require('axios');
+  const fs = require('fs');
+
+  const API_BASE = 'https://camel.kr777.top/v1';
+  const API_KEY = 'sk-your-api-key';  // 替换为你的 API Key
+
+  async function generateImage(prompt, outputFile = 'output.png') {
+    try {
+      const response = await axios.post(
+        `${API_BASE}/images/generations`,
+        {
+          model: 'gpt-image-2',
+          prompt: prompt,
+          n: 1,
+          size: '1024x1024'
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          timeout: 120000
+        }
+      );
+
+      const imageB64 = response.data.data[0].b64_json;
+      const imageBuffer = Buffer.from(imageB64, 'base64');
+      fs.writeFileSync(outputFile, imageBuffer);
+
+      console.log(`✅ 图片已保存到: ${outputFile}`);
+      return response.data;
+    } catch (error) {
+      console.error('生成失败:', error.response?.data || error.message);
+      throw error;
+    }
+  }
+
+  generateImage(
+    'A cute cat sitting on a laptop, digital art style',
+    'cat_on_laptop.png'
+  );
+  ```
+
+  ```bash cURL theme={null}
+  curl -X POST https://camel.kr777.top/v1/images/generations \
+    -H "Authorization: Bearer sk-your-api-key" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "gpt-image-2",
+      "prompt": "A cute cat sitting on a laptop",
+      "n": 1,
+      "size": "1024x1024"
+    }' \
+    | jq -r '.data[0].b64_json' \
+    | base64 -d > output.png
+  ```
+</CodeGroup>
+
+## 响应格式
+
+**成功响应（200 OK）：**
+
+```json  theme={null}
+{
+  "created": 1777004515,
+  "data": [
+    {
+      "b64_json": "iVBORw0KGgoAAAANSUhEUgAA...(base64编码的PNG图片)",
+      "revised_prompt": "A cute cat sitting on a laptop, digital art style\n\nRequested output image size: 1024x1024."
+    }
+  ]
+}
+```
+
+**字段说明：**
+
+* `created`：Unix 时间戳
+* `data`：图片数组
+  * `b64_json`：Base64 编码的 PNG 图片数据
+  * `revised_prompt`：优化后的提示词
+
+**错误响应：**
+
+```json  theme={null}
+{
+  "error": {
+    "code": "error_code",
+    "message": "错误描述",
+    "type": "new_api_error"
+  }
+}
+```
+
+## 计费说明
+
+* **模型：** `gpt-image-2`
+* **计费方式：** 按次计费
+* **单次生成：** 约 100,000 额度
+* **图片尺寸：** 1024x1024 约 1.5–2MB
+
+## 注意事项
+
+<Warning>
+  1. **分组限制：** 确保你的 API Key 所属分组有权限访问 `gpt-image-2` 模型。
+  2. **超时设置：** 图片生成通常需要 30–60 秒，建议设置 120 秒超时。
+  3. **提示词语言：** 英文提示词效果更好，中文会自动翻译。
+  4. **返回格式：** 图片以 Base64 编码返回，需要解码后保存为文件。
+  5. **并发限制：** 根据你的套餐限制并发请求数。
+</Warning>
+
+## 常见问题
+
+<AccordionGroup>
+  <Accordion title="如何保存 Base64 图片？">
+    使用 base64 解码库将 `b64_json` 字段解码为二进制数据，然后写入文件。
+  </Accordion>
+
+  <Accordion title="支持哪些图片尺寸？">
+    目前支持 `1024x1024`，其他尺寸请咨询客服。
+  </Accordion>
+
+  <Accordion title="生成失败怎么办？">
+    检查 API Key 是否有效、分组权限是否正确、提示词是否符合内容政策。
+  </Accordion>
+
+  <Accordion title="可以批量生成吗？">
+    可以，设置 `n` 参数大于 1，但会按倍数扣费。
+  </Accordion>
+</AccordionGroup>
+
+## 技术支持
+
+* **官网：** [https://camel.kr777.top](https://camel.kr777.top)
+* **文档：** [https://camel.kr777.top/docs](https://camel.kr777.top/docs)
+* **问题反馈：** 联系客服或提交工单
+
+---
+
+**更新时间：** 2026-04-24　**API 版本：** v2.6.0419
