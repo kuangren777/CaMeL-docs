@@ -59,7 +59,7 @@ Imagen 目前仅支持英文提示词，并提供以下参数：
 
   client = genai.Client(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      http_options={"base_url": "https://camel.kr777.top/gemini"},
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
   )
 
   # 目前只支持英文 prompt，绘制大量文本的表现较差
@@ -212,7 +212,7 @@ Output：text + image
 
   IMG_BASE64=$(base64 "$B64FLAGS" "$IMG_PATH" 2>&1)
 
-  curl https://api.kr777.top/chat/completions \
+  curl @@API_BASE@@/chat/completions \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer sk-***" \
     -d '{
@@ -251,7 +251,7 @@ Output：text + image
 
   client = OpenAI(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   # Using text-only input
@@ -324,7 +324,7 @@ Output：text + image
   def generate():
       client = genai.Client(
           api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-          http_options={"base_url": "https://camel.kr777.top/gemini"},
+          http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
       )
 
       model = "gemini-2.5-flash-image-preview"
@@ -372,7 +372,7 @@ Output：text + image
 
 **输出实例：**
 
-<img src="https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-gen.png?fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=e6fa8382333cd24b58a5a4ba4505543e" alt="图片" data-og-width="3394" width="3394" data-og-height="2530" height="2530" data-path="public/nb-gen.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-gen.png?w=280&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=bb81de1ec8221871b750b3549c2ba91e 280w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-gen.png?w=560&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=e1a576ab832d38b86af7bd82a08decd4 560w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-gen.png?w=840&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=20e05493208d340bbed7c0d88418c21c 840w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-gen.png?w=1100&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=6ec16437376a52670544046cd14f266c 1100w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-gen.png?w=1650&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=e6010ce256166f63f9747b9346e3a462 1650w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-gen.png?w=2500&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=84aa9b72cfb1c552abffe1e2710f864b 2500w" />
+> 📷 [图片：图片]
 
 ### 图片编辑
 
@@ -389,7 +389,7 @@ Output：text + image
 
   client = OpenAI(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -465,7 +465,7 @@ Output：text + image
 
 **输出实例：**
 
-<img src="https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-edit.png?fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=da4e944e508d9a62ccc017c56c11b712" alt="图片" data-og-width="3394" width="3394" data-og-height="2530" height="2530" data-path="public/nb-edit.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-edit.png?w=280&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=901844204375bf1bb050a5e69198da23 280w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-edit.png?w=560&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=cb7f533ba28bff8edef3ae02d7d1c119 560w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-edit.png?w=840&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=fb9acfa755b23149f5c6d2c7b62d63d7 840w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-edit.png?w=1100&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=5a9d9f47e62bf0351d71f0227498bad7 1100w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-edit.png?w=1650&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=9d28885765f96fe8593479b7bf6e21a1 1650w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/nb-edit.png?w=2500&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=76fd756dc2a4bdc97fb2a798841426f9 2500w" />
+> 📷 [图片：图片]
 
 ## 选择正确的绘图模型
 
@@ -492,7 +492,7 @@ Output：text + image
 
 ## Veo 3.0 视频生成
 
-VEO 3.0 是由 Google DeepMind 开发的最新先进视频生成模型。使用 [VEO 3.0](https://camel.kr777.top/models?model=veo-3.0-generate-preview)，您可以生成具有以下特点的视频：
+VEO 3.0 是由 Google DeepMind 开发的最新先进视频生成模型。使用 [VEO 3.0](@@CONSOLE_BASE@@/models?model=veo-3.0-generate-preview)，您可以生成具有以下特点的视频：
 
 * 从文本和图像提示中生成的质量提升
 * 语音，例如对话和配音
@@ -523,7 +523,7 @@ VEO 3.0 目前仅支持 curl 命令调用，采用两步处理方式：
 
 <CodeGroup>
   ```shell 步骤 1：发起生成请求 theme={null}
-  curl "https://camel.kr777.top/gemini/v1beta/models/veo-3.0-generate-preview:predictLongRunning?key=sk-***" \
+  curl "@@CONSOLE_BASE@@/gemini/v1beta/models/veo-3.0-generate-preview:predictLongRunning?key=sk-***" \
     -H "Content-Type: application/json" \
     -X "POST" \
     -d '{
@@ -545,7 +545,7 @@ VEO 3.0 目前仅支持 curl 命令调用，采用两步处理方式：
 
   ```shell 步骤 2：获取生成结果 theme={null}
   # 使用步骤 1 返回的 name 字段中的操作ID
-  curl "https://camel.kr777.top/gemini/v1beta/models/veo-3.0-generate-preview/operations/ff5***?key=sk-***"
+  curl "@@CONSOLE_BASE@@/gemini/v1beta/models/veo-3.0-generate-preview/operations/ff5***?key=sk-***"
   ```
 
   ```py 视频提取脚本 theme={null}
@@ -635,7 +635,7 @@ VEO 3.0 逆向接口使用 Openai 兼容方式，只需要传入模型 id `veo-3
 
   client = OpenAI(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   completion = client.chat.completions.create(
@@ -722,7 +722,7 @@ VEO 2.0 提供以下参数：
 
   client = genai.Client(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      http_options={"base_url": "https://camel.kr777.top/gemini"},
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
   )
 
   operation = client.models.generate_videos(
@@ -758,7 +758,7 @@ VEO 2.0 提供以下参数：
       
   client = genai.Client(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      http_options={"base_url": "https://camel.kr777.top/gemini"},
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
   )
 
   operation = client.models.generate_videos(

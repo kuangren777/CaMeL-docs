@@ -20,13 +20,13 @@ qwen --version
 
 ### 2️⃣ 环境变量配置
 
-在系统环境变量中填入 CaMeL AI 密钥和转发地址，密钥可以在 CaMeL AI [「Keys」页面](https://camel.kr777.top/token) 生成。
+在系统环境变量中填入 CaMeL AI 密钥和转发地址，密钥可以在 CaMeL AI [「Keys」页面](@@CONSOLE_BASE@@/token) 生成。
 
 比如在 \~/.zshrc 中添加：
 
 ```shell  theme={null}
 export OPENAI_API_KEY="your_camelai_key"
-export OPENAI_BASE_URL="https://api.kr777.top"
+export OPENAI_BASE_URL="@@API_BASE@@"
 export OPENAI_MODEL="your_model"
 ```
 
@@ -48,10 +48,10 @@ qwen
 
 启动之后输入 `/about` 确认配置，回车，可以看到当前的版本信息和选择的大模型：
 
-<img src="https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/Qwen-code.png?fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=fbf0fe0ae179a4a00c1842a068144a8d" alt="about" data-og-width="1990" width="1990" data-og-height="2034" height="2034" data-path="public/Qwen-code.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/Qwen-code.png?w=280&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=7136bd2247853ac317363358943a3b5a 280w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/Qwen-code.png?w=560&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=f4a65caf48ac4411deed26184db29daa 560w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/Qwen-code.png?w=840&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=af231e722fd209f1d680e51e74e9f99e 840w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/Qwen-code.png?w=1100&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=2edb5932a750861270a65d3ec1c67797 1100w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/Qwen-code.png?w=1650&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=b5dc023ec907f2fccd79ec7bd1b9cfcb 1650w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/Qwen-code.png?w=2500&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=aa1bd4008d99f91476c6e6c3180af7bb 2500w" />
+> 📷 [图片：about]
 
 <Note>
-  有网友反馈 Qwen Code 存在一定的卡壳概率，我们推荐为[密钥 ↗](https://camel.kr777.top/token)设置**有限额度**来规避不必要的浪费
+  有网友反馈 Qwen Code 存在一定的卡壳概率，我们推荐为[密钥 ↗](@@CONSOLE_BASE@@/token)设置**有限额度**来规避不必要的浪费
 </Note>
 
 接下来正常使用即可。

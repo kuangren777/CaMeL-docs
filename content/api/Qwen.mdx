@@ -17,7 +17,7 @@ Qwen3 系列是阿里推出的新一代开源大模型，能力大幅跃升：�
 
   client = OpenAI(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   completion = client.chat.completions.create(
@@ -43,7 +43,7 @@ Qwen3 系列是阿里推出的新一代开源大模型，能力大幅跃升：�
 
   client = OpenAI(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   # 定义工具
@@ -134,7 +134,7 @@ Qwen3 系列是阿里推出的新一代开源大模型，能力大幅跃升：�
       'model': 'Qwen/Qwen3-30B-A3B',
 
       # Use a custom endpoint compatible with OpenAI API:
-      'model_server': 'https://api.kr777.top',
+      'model_server': '@@API_BASE@@',
       'api_key': os.getenv('CAMELAI_API_KEY'),
 
       # Other parameters:
@@ -191,7 +191,7 @@ Qwen3 系列是阿里推出的新一代开源大模型，能力大幅跃升：�
 
   client = OpenAI(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   image_path = "yourpath/file.png"
@@ -239,7 +239,7 @@ Qwen3 系列是阿里推出的新一代开源大模型，能力大幅跃升：�
 
   client = OpenAI(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   completion = client.chat.completions.create(

@@ -43,9 +43,9 @@ npm install -g @anthropic-ai/claude-code
 
 要通过兼容 Anthropic API 的方式来接入 CaMeL AI 的模型服务，需要配置以下环境变量。
 
-1. 将`ANTHROPIC_BASE_URL` 设置为`https://api.kr777.top`
-2. `ANTHROPIC_AUTH_TOKEN` 设置为从 [CaMeL AI 平台](https://camel.kr777.top/token) 获取的 API Key
-3. `ANTHROPIC_MODEL`：设置为[模型列表](https://camel.kr777.top/models)中支持的模型。
+1. 将`ANTHROPIC_BASE_URL` 设置为`@@API_BASE@@`
+2. `ANTHROPIC_AUTH_TOKEN` 设置为从 [CaMeL AI 平台](@@CONSOLE_BASE@@/token) 获取的 API Key
+3. `ANTHROPIC_MODEL`：设置为[模型列表](@@CONSOLE_BASE@@/models)中支持的模型。
 
 <Tabs>
   <Tab title="macOS">
@@ -60,14 +60,14 @@ npm install -g @anthropic-ai/claude-code
     <CodeGroup>
       ```shellscript Zsh theme={null}
       # CAMELAI_API_KEY 替换为你从 CaMeL AI 平台获取的 Key
-      echo 'export ANTHROPIC_BASE_URL="https://api.kr777.top"' >> ~/.zshrc
+      echo 'export ANTHROPIC_BASE_URL="@@API_BASE@@"' >> ~/.zshrc
       echo 'export ANTHROPIC_AUTH_TOKEN="CAMELAI_API_KEY"' >> ~/.zshrc
       echo 'export ANTHROPIC_MODEL="claude-sonnet-4-5"' >> ~/.zshrc
       ```
 
       ```shellscript Bash theme={null}
       # CAMELAI_API_KEY 替换为你从 CaMeL AI 平台获取的 Key
-      echo 'export ANTHROPIC_BASE_URL="https://api.kr777.top"' >> ~/.bash_profile
+      echo 'export ANTHROPIC_BASE_URL="@@API_BASE@@"' >> ~/.bash_profile
       echo 'export ANTHROPIC_AUTH_TOKEN="CAMELAI_API_KEY"' >> ~/.bash_profile
       echo 'export ANTHROPIC_MODEL="claude-sonnet-4-5"' >> ~/.bash_profile
       ```
@@ -104,7 +104,7 @@ npm install -g @anthropic-ai/claude-code
         ```shellscript  theme={null}
         REM CaMeL AI API Key 替换 CAMELAI_API_KEY
         setx ANTHROPIC_AUTH_TOKEN "CAMELAI_API_KEY"
-        setx ANTHROPIC_BASE_URL "https://api.kr777.top"
+        setx ANTHROPIC_BASE_URL "@@API_BASE@@"
         setx ANTHROPIC_MODEL "claude-sonnet-4-5"
         ```
 
@@ -123,7 +123,7 @@ npm install -g @anthropic-ai/claude-code
         ```shellscript  theme={null}
         # CaMeL AI API Key 替换 CAMELAI_API_KEY
         [Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "CAMELAI_API_KEY", [EnvironmentVariableTarget]::User)
-        [Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://api.kr777.top", [EnvironmentVariableTarget]::User)
+        [Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "@@API_BASE@@", [EnvironmentVariableTarget]::User)
         [Environment]::SetEnvironmentVariable("ANTHROPIC_MODEL", "claude-sonnet-4-5", [EnvironmentVariableTarget]::User)
         ```
 
@@ -150,7 +150,7 @@ $ cd /path/your-project
 
 初次使用 Claude Code 时，可能会强制要求登录 Anthropic 账户。请按以下步骤操作以跳过该流程：
 
-<img src="https://mintcdn.com/aihubmix/HZpz50Qb6hBBcBVb/public/cc-7.jpg?fit=max&auto=format&n=HZpz50Qb6hBBcBVb&q=85&s=0d1309bcea8f4170809d104bc2b380a6" alt="Cc 7" data-og-width="1622" width="1622" data-og-height="438" height="438" data-path="public/cc-7.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/HZpz50Qb6hBBcBVb/public/cc-7.jpg?w=280&fit=max&auto=format&n=HZpz50Qb6hBBcBVb&q=85&s=8ef1fbe0490c5d37198d0c09fd0a197e 280w, https://mintcdn.com/aihubmix/HZpz50Qb6hBBcBVb/public/cc-7.jpg?w=560&fit=max&auto=format&n=HZpz50Qb6hBBcBVb&q=85&s=c86fd0b839a910969f198d83fef31624 560w, https://mintcdn.com/aihubmix/HZpz50Qb6hBBcBVb/public/cc-7.jpg?w=840&fit=max&auto=format&n=HZpz50Qb6hBBcBVb&q=85&s=31f567f9f290b84363a8d3973aa7c03b 840w, https://mintcdn.com/aihubmix/HZpz50Qb6hBBcBVb/public/cc-7.jpg?w=1100&fit=max&auto=format&n=HZpz50Qb6hBBcBVb&q=85&s=39a113f37205304b77eedf7ab7be2f5c 1100w, https://mintcdn.com/aihubmix/HZpz50Qb6hBBcBVb/public/cc-7.jpg?w=1650&fit=max&auto=format&n=HZpz50Qb6hBBcBVb&q=85&s=2664cafcf3768d8f332664fe3b9f48ec 1650w, https://mintcdn.com/aihubmix/HZpz50Qb6hBBcBVb/public/cc-7.jpg?w=2500&fit=max&auto=format&n=HZpz50Qb6hBBcBVb&q=85&s=fd5c568932d15f652877310678c6fa8c 2500w" />
+> 📷 [图片：Cc 7]
 
 1. 定位用户主目录下的 `.claude.json` 文件，具体路径如下：
    * macOS / Linux: `~/.claude.json`
@@ -211,23 +211,23 @@ export ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-haiku-4-5"
 
 1. 运行 CC-Switch，点击「添加供应商」。
 
-<img src="https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-1.jpg?fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=257b71ad7c6f876ac31147b7fd81f169" alt="Cc 1" data-og-width="2068" width="2068" data-og-height="1370" height="1370" data-path="public/cc-1.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-1.jpg?w=280&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=e6d30c4f0531f9e507e4fd87aa4697aa 280w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-1.jpg?w=560&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=3d5842bb2993eacf7a3c3e0e4c61d3da 560w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-1.jpg?w=840&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=0f93ac94bbaa2c6cc804dcd1b7275ff9 840w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-1.jpg?w=1100&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=d7255df054cf381d33d6fb7aebcece5f 1100w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-1.jpg?w=1650&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=b31ffc66af577c371d701ea145c3a155 1650w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-1.jpg?w=2500&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=d34e6077743ab7cf41c87666cc4a40c3 2500w" />
+> 📷 [图片：Cc 1]
 
 2. 在预设列表中选择「CaMeL AI」。
 
-<img src="https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-2.jpg?fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=16dcb0697fdbf6438d4452ff8c39e485" alt="Cc 2" data-og-width="2072" width="2072" data-og-height="1376" height="1376" data-path="public/cc-2.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-2.jpg?w=280&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=d26ba5a2978f78bba7b6ab21d242b39a 280w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-2.jpg?w=560&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=de7a8db8ee048ff59b607ab4811b4fb0 560w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-2.jpg?w=840&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=789d70dde12abd7331bbbe4c1648252c 840w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-2.jpg?w=1100&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=1cfcc70338dbfbb526b3f23e3b69ec43 1100w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-2.jpg?w=1650&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=0aa51238e01754057b7705ade395c930 1650w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-2.jpg?w=2500&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=eafcd50ec37e810768dd77ada4b68844 2500w" />
+> 📷 [图片：Cc 2]
 
 3. 在「API Key」栏中填写你的密钥。
 
-<img src="https://mintcdn.com/aihubmix/qVeqJ54P7wCzwnj-/public/cc-3.jpg?fit=max&auto=format&n=qVeqJ54P7wCzwnj-&q=85&s=30deb64e7737ba515d70b161ee19ea58" alt="Cc 3" data-og-width="2070" width="2070" data-og-height="1372" height="1372" data-path="public/cc-3.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/qVeqJ54P7wCzwnj-/public/cc-3.jpg?w=280&fit=max&auto=format&n=qVeqJ54P7wCzwnj-&q=85&s=5b509e1455a6aececde71ea63ff670db 280w, https://mintcdn.com/aihubmix/qVeqJ54P7wCzwnj-/public/cc-3.jpg?w=560&fit=max&auto=format&n=qVeqJ54P7wCzwnj-&q=85&s=97c463aab14653c172c705687c4e5a2f 560w, https://mintcdn.com/aihubmix/qVeqJ54P7wCzwnj-/public/cc-3.jpg?w=840&fit=max&auto=format&n=qVeqJ54P7wCzwnj-&q=85&s=29d7fc5955d158861a50e0ca9f9d9cb9 840w, https://mintcdn.com/aihubmix/qVeqJ54P7wCzwnj-/public/cc-3.jpg?w=1100&fit=max&auto=format&n=qVeqJ54P7wCzwnj-&q=85&s=c2efdc7b6f2fd7b7f8a1070a4cf261a4 1100w, https://mintcdn.com/aihubmix/qVeqJ54P7wCzwnj-/public/cc-3.jpg?w=1650&fit=max&auto=format&n=qVeqJ54P7wCzwnj-&q=85&s=21629bc22811636ee1e7422bb6752a58 1650w, https://mintcdn.com/aihubmix/qVeqJ54P7wCzwnj-/public/cc-3.jpg?w=2500&fit=max&auto=format&n=qVeqJ54P7wCzwnj-&q=85&s=1a66ae10a4118392c6ad38cbe0ce8f2a 2500w" />
+> 📷 [图片：Cc 3]
 
 4. 配置完成后，点击「添加」保存设置。
 
-<img src="https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-4.jpg?fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=4fc79977772e8316dcef67759038b743" alt="Cc 4" data-og-width="2070" width="2070" data-og-height="1370" height="1370" data-path="public/cc-4.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-4.jpg?w=280&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=662f150fa2fe3ca58633ba7ecb352023 280w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-4.jpg?w=560&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=9df1983062004986f06589b4ba12828e 560w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-4.jpg?w=840&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=f84d8cf5e399d06957af889a5966186e 840w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-4.jpg?w=1100&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=5c4558f40f06abb3a5b154b60f971df5 1100w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-4.jpg?w=1650&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=0384b14be7687b8438d9824e99591c51 1650w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-4.jpg?w=2500&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=0e4017c264c3fb6fe58b85a8817642c4 2500w" />
+> 📷 [图片：Cc 4]
 
 5. 返回首页，在供应商列表中选择「CaMeL AI」，点击「启动」即可使用。
 
-<img src="https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-5.jpg?fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=4e765832e55e9737c91e2b40bf127c5d" alt="Cc 5" data-og-width="2068" width="2068" data-og-height="1366" height="1366" data-path="public/cc-5.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-5.jpg?w=280&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=b776611f71c4e4fe1f6697e33c85b70b 280w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-5.jpg?w=560&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=6d846545b29587dc4ef874e92e863ca2 560w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-5.jpg?w=840&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=d156a1ee8baa0296271ddeb480982647 840w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-5.jpg?w=1100&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=51ad9902225acb4f93b6d88883a55328 1100w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-5.jpg?w=1650&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=d2fb4bdeb2ca7c61f52b7767fb4387d5 1650w, https://mintcdn.com/aihubmix/l2uHw7hd14guDu0f/public/cc-5.jpg?w=2500&fit=max&auto=format&n=l2uHw7hd14guDu0f&q=85&s=8024b3ffd8e64bdf81da26601bb5a472 2500w" />
+> 📷 [图片：Cc 5]
 
 ## 常见问题
 
@@ -235,7 +235,7 @@ export ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-haiku-4-5"
 
 打开 Claude 终端，输入 `/config` ，找到 `Use custom API key` 选项，检查 Token 是否正确配置。
 
-<img src="https://mintcdn.com/aihubmix/Sq3QhNkLGyt6npNr/public/cc-6.png?fit=max&auto=format&n=Sq3QhNkLGyt6npNr&q=85&s=27b1369c8b3970c789b7585e060bde07" alt="install" data-og-width="1220" width="1220" data-og-height="760" height="760" data-path="public/cc-6.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/Sq3QhNkLGyt6npNr/public/cc-6.png?w=280&fit=max&auto=format&n=Sq3QhNkLGyt6npNr&q=85&s=7e9a8da3fb1f893d6a3a67538fd3ae37 280w, https://mintcdn.com/aihubmix/Sq3QhNkLGyt6npNr/public/cc-6.png?w=560&fit=max&auto=format&n=Sq3QhNkLGyt6npNr&q=85&s=f8b6c28f7959e8df08762c592b228eea 560w, https://mintcdn.com/aihubmix/Sq3QhNkLGyt6npNr/public/cc-6.png?w=840&fit=max&auto=format&n=Sq3QhNkLGyt6npNr&q=85&s=3f5736b1dc0b5b0d50abbac2e42b6cdd 840w, https://mintcdn.com/aihubmix/Sq3QhNkLGyt6npNr/public/cc-6.png?w=1100&fit=max&auto=format&n=Sq3QhNkLGyt6npNr&q=85&s=68cba530dd40ec087ad98c5e7cb87b64 1100w, https://mintcdn.com/aihubmix/Sq3QhNkLGyt6npNr/public/cc-6.png?w=1650&fit=max&auto=format&n=Sq3QhNkLGyt6npNr&q=85&s=e11dfb4f1502f6462c936d09e2c537d7 1650w, https://mintcdn.com/aihubmix/Sq3QhNkLGyt6npNr/public/cc-6.png?w=2500&fit=max&auto=format&n=Sq3QhNkLGyt6npNr&q=85&s=b346c1503c4da078d0286a6fbe86543d 2500w" />
+> 📷 [图片：install]
 
 ### Q：macOS 中安装成功后仍然报错：`zsh: command not found: claude`
 

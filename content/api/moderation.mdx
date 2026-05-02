@@ -7,7 +7,7 @@ description: "提供与 OpenAI 标准完全兼容的内容审查 API，开发者
 
 ## 接口信息
 
-* **Endpoint (API 地址)**: `https://api.kr777.top/moderations`
+* **Endpoint (API 地址)**: `@@API_BASE@@/moderations`
 * **请求方式**: `POST`
 * **认证方式**: `Authorization: Bearer <CAMELAI_API_KEY>`
 * **Content-Type**: `application/json`
@@ -27,7 +27,7 @@ description: "提供与 OpenAI 标准完全兼容的内容审查 API，开发者
 
   client = openai.OpenAI(
     api_key="CAMELAI_API_KEY",  
-    base_url="https://api.kr777.top"
+    base_url="@@API_BASE@@"
   )
 
   response = client.moderations.create(
@@ -43,7 +43,7 @@ description: "提供与 OpenAI 标准完全兼容的内容审查 API，开发者
 
   client = openai.OpenAI(
     api_key="CAMELAI_API_KEY", 
-    base_url="https://api.kr777.top"
+    base_url="@@API_BASE@@"
   )
 
   response = client.moderations.create(

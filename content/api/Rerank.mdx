@@ -12,7 +12,7 @@ description: "CaMeL AI 提供兼容 OpenAI 标准的高效重排序方案"
   import requests
   import json
 
-  url = "https://api.kr777.top/rerank"
+  url = "@@API_BASE@@/rerank"
 
   headers = {
       'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ description: "CaMeL AI 提供兼容 OpenAI 标准的高效重排序方案"
   ```
 
   ```cURL curl theme={null}
-  curl https://api.kr777.top/rerank \\
+  curl @@API_BASE@@/rerank \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <CAMELAI_API_KEY>" \\
   -d '{

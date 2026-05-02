@@ -15,9 +15,9 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
     // 核心逻辑：替换 API Key、Base URL，添加 APP-Code
     const config = {
       apiKey: 'your-camelai-api-key',  // 替换为 CaMeL AI API Key
-      baseURL: 'https://camel.kr777.top',   // 替换为 CaMeL AI 网关
+      baseURL: '@@CONSOLE_BASE@@',   // 替换为 CaMeL AI 网关
       headers: {
-        'APP-Code': 'APP Code'  // 应用Code可从https://camel.kr777.top/appstore获取
+        'APP-Code': 'APP Code'  // 应用Code可从@@CONSOLE_BASE@@/appstore获取
       }
     };
 
@@ -27,7 +27,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
         // Claude 模型：使用 Anthropic SDK
         return 'anthropic';
       } else if (modelName.startsWith('gemini') && !modelName.endsWith('-nothink') && !modelName.endsWith('-search')) {
-        // Gemini 模型：使用 Google SDK，端点 https://camel.kr777.top/gemini
+        // Gemini 模型：使用 Google SDK，端点 @@CONSOLE_BASE@@/gemini
         return 'gemini';
       } else {
         // 其他模型：使用 OpenAI 兼容接口
@@ -42,9 +42,9 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
     # 核心逻辑：替换 API Key、Base URL，添加 APP-Code
     credentials = {
         "api_key": "your-camelai-api-key",  # 替换为 CaMeL AI API Key
-        "base_url": "https://camel.kr777.top",   # 替换为 CaMeL AI 网关
+        "base_url": "@@CONSOLE_BASE@@",   # 替换为 CaMeL AI 网关
         "extra_headers": {
-            "APP-Code": "APP Code"  # 应用Code可从https://camel.kr777.top/appstore获取
+            "APP-Code": "APP Code"  # 应用Code可从@@CONSOLE_BASE@@/appstore获取
         }
     }
 
@@ -54,7 +54,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
             # Claude 模型：使用 Anthropic SDK
             return "anthropic"
         elif model_name.startswith("gemini") and not model_name.endswith(("-nothink", "-search")):
-            # Gemini 模型：使用 Google SDK，端点 https://camel.kr777.top/gemini
+            # Gemini 模型：使用 Google SDK，端点 @@CONSOLE_BASE@@/gemini
             return "gemini"
         else:
             # 其他模型：使用 OpenAI 兼容接口
@@ -86,7 +86,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
       constructor(apiKey: string) {
         this.config = {
           apiKey,
-          baseURL: 'https://camel.kr777.top',
+          baseURL: '@@CONSOLE_BASE@@',
           appCode: 'APP Code'
         };
       }
@@ -146,7 +146,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
     class CaMeL AIModelClient:
         def __init__(self, api_key: str):
             self.api_key = api_key
-            self.base_url = "https://camel.kr777.top"
+            self.base_url = "@@CONSOLE_BASE@@"
             self.headers = {
                 "Authorization": f"Bearer {api_key}",
                 "APP-Code": "APP Code"
@@ -265,7 +265,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
     ```typescript  theme={null}
     const config = {
       apiKey: process.env.CAMELAI_API_KEY || '',
-      baseURL: process.env.CAMELAI_BASE_URL || 'https://camel.kr777.top',
+      baseURL: process.env.CAMELAI_BASE_URL || '@@CONSOLE_BASE@@',
       appCode: process.env.CAMELAI_APP_CODE || 'APP Code'
     };
     ```
@@ -277,7 +277,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
 
     config = {
         "api_key": os.getenv("CAMELAI_API_KEY", ""),
-        "base_url": os.getenv("CAMELAI_BASE_URL", "https://camel.kr777.top"),
+        "base_url": os.getenv("CAMELAI_BASE_URL", "@@CONSOLE_BASE@@"),
         "app_code": os.getenv("CAMELAI_APP_CODE", "APP Code")
     }
     ```
@@ -338,7 +338,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
 * **统一追加折扣码**：在 Provider 级别合并 `extra_headers` 并设置 `APP-Code`（项目中为 `MLTG2087`）
 * **多客户端路由**：
   * `claude*` → 使用 Anthropic 客户端
-  * `gemini*`/`imagen*` 且不以 `-nothink`/`-search` 结尾且不包含 `embedding` → 使用 Gemini 客户端（`apiHost: https://camel.kr777.top/gemini`）
+  * `gemini*`/`imagen*` 且不以 `-nothink`/`-search` 结尾且不包含 `embedding` → 使用 Gemini 客户端（`apiHost: @@CONSOLE_BASE@@/gemini`）
   * OpenAI 系列（排除 `gpt-oss`）→ 使用 OpenAI 兼容响应客户端
   * 其他 → 回退到默认 OpenAI 客户端
 * **BaseURL 获取**：从当前已路由的具体客户端导出，保持各家端点差异
@@ -350,7 +350,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
 * **统一追加折扣码**：在 Provider 级别合并 `extra_headers` 并设置 `APP-Code`（项目中为 `Dify2025`）
 * **多客户端路由**：
   * `claude*` → 使用 Anthropic 客户端
-  * `gemini*`/`imagen*` 且不以 `-nothink`/`-search` 结尾且不包含 `embedding` → 使用 Gemini 客户端（`apiHost: https://camel.kr777.top/gemini`）
+  * `gemini*`/`imagen*` 且不以 `-nothink`/`-search` 结尾且不包含 `embedding` → 使用 Gemini 客户端（`apiHost: @@CONSOLE_BASE@@/gemini`）
   * OpenAI 系列（排除 `gpt-oss`）→ 使用 OpenAI 兼容响应客户端
   * 其他 → 回退到默认 OpenAI 客户端
 * **BaseURL 获取**：从当前已路由的具体客户端导出，保持各家端点差异
@@ -358,7 +358,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
 ### 4.3 对齐清单
 
 * Provider 入口统一合并 `extra_headers` 并注入 `APP-Code`
-* Gemini 客户端使用 `https://camel.kr777.top/gemini` 作为 `apiHost`
+* Gemini 客户端使用 `@@CONSOLE_BASE@@/gemini` 作为 `apiHost`
 * 路由规则与 `claude*`、`gemini*/imagen*`、OpenAI 系列（排除 `gpt-oss`）一致
 * 默认回退到 OpenAI 客户端，保持与 OpenAI 兼容接口行为
 * `getBaseURL()` 始终从当前路由客户端导出，避免硬编码
@@ -366,7 +366,7 @@ description: "基于 `@camelai/ai-sdk-provider`、`dify-plugin-camelai` 和 `che
 ## 5. 迁移检查清单
 
 * 替换 API Key 为 CaMeL AI API Key
-* 替换 Base URL 为 `https://camel.kr777.top`
+* 替换 Base URL 为 `@@CONSOLE_BASE@@`
 * 添加 `APP-Code` header 享受折扣
 * 实现模型路由逻辑（claude/gemini/openai）
 * 处理空工具时的 `tool_choice` 修复

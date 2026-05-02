@@ -35,8 +35,8 @@ OpenAI 的绘图接口 `gpt-image-1`，支持文生图（generate）、图文生
 
 **端点 (Endpoints)**
 
-1. 绘图：`https://api.kr777.top/images/generations`
-2. 编辑：`https://api.kr777.top/images/edits`
+1. 绘图：`@@API_BASE@@/images/generations`
+2. 编辑：`@@API_BASE@@/images/edits`
 
 **Python 调用示例如下：**
 
@@ -48,7 +48,7 @@ OpenAI 的绘图接口 `gpt-image-1`，支持文生图（generate）、图文生
 
   client = OpenAI(
       api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key "sk-***"
-      base_url="https://api.kr777.top"
+      base_url="@@API_BASE@@"
   )
 
   prompt = """redesign poster of the movie [Black Swan], 3D cartoon, smooth render, bright tone, 2:3 portrait."""
@@ -107,7 +107,7 @@ OpenAI 的绘图接口 `gpt-image-1`，支持文生图（generate）、图文生
 
   client = OpenAI(
       api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key "sk-***"
-      base_url="https://api.kr777.top"
+      base_url="@@API_BASE@@"
   )
 
   prompt = """redesign poster of the movie [Black Swan], 3D cartoon, smooth render, bright tone, 2:3 portrait."""
@@ -252,7 +252,7 @@ Error code: 400 - {'error': {'message': 'Your request was rejected as a result o
 
   client = OpenAI(
       api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key "sk-***"
-      base_url="https://api.kr777.top"
+      base_url="@@API_BASE@@"
   )
 
   # 创建聊天完成请求
@@ -302,7 +302,7 @@ Error code: 400 - {'error': {'message': 'Your request was rejected as a result o
 
   client = OpenAI(
       api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key
-      base_url="https://api.kr777.top"
+      base_url="@@API_BASE@@"
   )
 
   stream = client.chat.completions.create(
@@ -358,7 +358,7 @@ Error code: 400 - {'error': {'message': 'Your request was rejected as a result o
 
   client = OpenAI(
       api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key
-      base_url="https://api.kr777.top"
+      base_url="@@API_BASE@@"
   )
 
   stream = client.chat.completions.create(
@@ -416,11 +416,11 @@ Error code: 400 - {'error': {'message': 'Your request was rejected as a result o
 > ✅ Generation complete
 
 
-![gen_01jsccq83pfg6ssfqf3pzfaytj](https://filesystem.site/cdn/20250421/XBCrAs6qvMARG7BkFX0KI3MBs1qoto.png)
+> 📷 [图片：gen_01jsccq83pfg6ssfqf3pzfaytj]
 
 [Click to download](https://filesystem.site/cdn/download/20250421/XBCrAs6qvMARG7BkFX0KI3MBs1qoto.png)
 
-![gen_01jsccq83nf6ftmtx8y48h383y](https://filesystem.site/cdn/20250421/tQ62gh0BbdESApNmFJMNzsdUFDflkl.png)
+> 📷 [图片：gen_01jsccq83nf6ftmtx8y48h383y]
 
 [Click to download](https://filesystem.site/cdn/download/20250421/tQ62gh0BbdESApNmFJMNzsdUFDflkl.png)%      
 ```
@@ -441,7 +441,7 @@ import base64
 
 client = OpenAI(
     api_key="CAMELAI_API_KEY", # 替换成你的 CaMeL AI 密钥
-    base_url="https://api.kr777.top"
+    base_url="@@API_BASE@@"
 )
 
 prompt = """

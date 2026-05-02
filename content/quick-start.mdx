@@ -8,10 +8,10 @@ description: "生成 API 密钥并进行首次调用"
 ## 直接调用 CaMeL AI API
 
 <Tip>
-  其中 `<CAMELAI_API_KEY>` 替换为 [CaMeL AI Key](https://camel.kr777.top/token)，注意 `key` 的有效期和额度限制。
+  其中 `<CAMELAI_API_KEY>` 替换为 [CaMeL AI Key](@@CONSOLE_BASE@@/token)，注意 `key` 的有效期和额度限制。
 </Tip>
 
-可使用的 `model` 列表，可查阅 [模型广场](https://camel.kr777.top/models) ，复制模型名称替换即可。
+可使用的 `model` 列表，可查阅 [模型广场](@@CONSOLE_BASE@@/models) ，复制模型名称替换即可。
 
 <CodeGroup>
   ```py Python theme={null}
@@ -19,7 +19,7 @@ description: "生成 API 密钥并进行首次调用"
   import json
 
   response = requests.post(
-    url="https://api.kr777.top/chat/completions",
+    url="@@API_BASE@@/chat/completions",
     headers={
       "Authorization": "Bearer <CAMELAI_API_KEY>",
       "Content-Type": "application/json",
@@ -37,8 +37,8 @@ description: "生成 API 密钥并进行首次调用"
   ```
 
   ```typescript Javascript theme={null}
-  // 请在 https://camel.kr777.top 域名下尝试，否则有浏览器跨域问题
-  fetch('https://api.kr777.top/chat/completions', {
+  // 请在 @@CONSOLE_BASE@@ 域名下尝试，否则有浏览器跨域问题
+  fetch('@@API_BASE@@/chat/completions', {
     method: 'POST',
     headers: {
       Authorization: 'Bearer <CAMELAI_API_KEY>',
@@ -57,7 +57,7 @@ description: "生成 API 密钥并进行首次调用"
   ```
 
   ```Shell Curl theme={null}
-  curl 'https://api.kr777.top/chat/completions'
+  curl '@@API_BASE@@/chat/completions'
   -H 'Authorization: Bearer <CAMELAI_API_KEY>'
   -H 'Content-Type: application/json'
   -d '{
@@ -76,14 +76,14 @@ description: "生成 API 密钥并进行首次调用"
 
 ## 使用 OpenAI SDK
 
-其中 `<CAMELAI_API_KEY>` 替换为 [CaMeL AI Key](https://camel.kr777.top/token)，注意 `key` 的有效期和额度限制。 可使用的 `model` 列表，可查阅 [模型广场](https://camel.kr777.top/models) ，复制模型名称替换即可。
+其中 `<CAMELAI_API_KEY>` 替换为 [CaMeL AI Key](@@CONSOLE_BASE@@/token)，注意 `key` 的有效期和额度限制。 可使用的 `model` 列表，可查阅 [模型广场](@@CONSOLE_BASE@@/models) ，复制模型名称替换即可。
 
 <CodeGroup>
   ```py Python theme={null}
   from openai import OpenAI
 
   client = OpenAI(
-    base_url="https://api.kr777.top",
+    base_url="@@API_BASE@@",
     api_key="<CAMELAI_API_KEY>",
   )
 
@@ -114,7 +114,7 @@ description: "生成 API 密钥并进行首次调用"
   import OpenAI from 'openai';
 
   const openai = new OpenAI({
-    baseURL: 'https://api.kr777.top',
+    baseURL: '@@API_BASE@@',
     apiKey: '<CAMELAI_API_KEY>',
   });
 

@@ -97,7 +97,7 @@ description: "使用 Whisper 模型将音频文件转换为文本，支持转录
 
 <CodeGroup>
   ```shell Curl 转录 theme={null}
-  curl https://api.kr777.top/audio/transcriptions \
+  curl @@API_BASE@@/audio/transcriptions \
     -H "Authorization: Bearer $CAMELAI_API_KEY" \
     -H "Content-Type: multipart/form-data" \
     -F file="@/path/to/file/audio.mp3" \
@@ -107,7 +107,7 @@ description: "使用 Whisper 模型将音频文件转换为文本，支持转录
   ```
 
   ```shell Curl 翻译 theme={null}
-  curl https://api.kr777.top/audio/translations \
+  curl @@API_BASE@@/audio/translations \
     -H "Authorization: Bearer $CAMELAI_API_KEY" \
     -H "Content-Type: multipart/form-data" \
     -F file="@/path/to/file/audio.mp3" \
@@ -123,7 +123,7 @@ description: "使用 Whisper 模型将音频文件转换为文本，支持转录
 
   client = OpenAI(
     api_key="sk-***", # 替换为你的 CaMeL AI API 密钥
-    base_url="https://api.kr777.top"
+    base_url="@@API_BASE@@"
   )
 
   # 打开音频文件
@@ -148,7 +148,7 @@ description: "使用 Whisper 模型将音频文件转换为文本，支持转录
 
   client = OpenAI(
     api_key="sk-***", # 替换为你的 CaMeL AI API 密钥
-    base_url="https://api.kr777.top"
+    base_url="@@API_BASE@@"
   )
 
   # 打开音频文件
@@ -172,7 +172,7 @@ description: "使用 Whisper 模型将音频文件转换为文本，支持转录
 
   client = OpenAI(
     api_key="sk-***", # 替换为你的 CaMeL AI API 密钥
-    base_url="https://api.kr777.top"
+    base_url="@@API_BASE@@"
   )
 
   audio_file = open("path/to/audio.wav", "rb")
@@ -199,7 +199,7 @@ description: "使用 Whisper 模型将音频文件转换为文本，支持转录
 
   client = OpenAI(
     api_key="sk-***", # 替换为你的 CaMeL AI API 密钥
-    base_url="https://api.kr777.top"
+    base_url="@@API_BASE@@"
   )
 
   audio_file = open("path/to/video_audio.mp4", "rb")

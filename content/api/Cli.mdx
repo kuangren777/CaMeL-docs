@@ -11,8 +11,8 @@ CaMeL AI CLI 是一个实用管理脚本集合，无需通过网页界面，就�
 
 在开始使用 CaMeL AI CLI 前，你需要：
 
-1. 一个 [CaMeL AI 账户](https://camel.kr777.top)
-2. 从 [CaMeL AI 设置页面](https://camel.kr777.top/setting) 点击「生成系统访问令牌」生成访问令牌 (Access Token)；
+1. 一个 [CaMeL AI 账户](@@CONSOLE_BASE@@)
+2. 从 [CaMeL AI 设置页面](@@CONSOLE_BASE@@/setting) 点击「生成系统访问令牌」生成访问令牌 (Access Token)；
 3. 安装必要的 Python 依赖项：
 
 ```bash  theme={null}
@@ -47,7 +47,7 @@ CaMeL AI CLI 提供以下主要功能：
 <CodeGroup>
   ```shell Curl 获取账户余额 theme={null}
   # 通过 curl 获取余额，余额为 quota /500000
-  curl -X GET "https://camel.kr777.top/api/user/self" \
+  curl -X GET "@@CONSOLE_BASE@@/api/user/self" \
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -H "Content-Type: application/json"
   ```
@@ -57,7 +57,7 @@ CaMeL AI CLI 提供以下主要功能：
   import json
 
   # API 配置
-  api_url = "https://camel.kr777.top"
+  api_url = "@@CONSOLE_BASE@@"
   access_token = "YOUR_ACCESS_TOKEN"
   headers = {
       "Authorization": access_token,
@@ -83,11 +83,11 @@ CaMeL AI CLI 提供以下主要功能：
   ```
 
   ```shell CLI 获取账户余额 theme={null}
-  python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action get_balance
+  python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action get_balance
   ```
 
   ```shell CLI 获取 Key 的可用额度 theme={null}
-  curl 'https://camel.kr777.top/dashboard/billing/remain' \
+  curl '@@CONSOLE_BASE@@/dashboard/billing/remain' \
     -H 'authorization: Bearer sk-***' \
   ```
 </CodeGroup>
@@ -98,7 +98,7 @@ CaMeL AI CLI 提供以下主要功能：
 
 <CodeGroup>
   ```shell Curl theme={null}
-  curl -X POST "https://camel.kr777.top/api/token/" \
+  curl -X POST "@@CONSOLE_BASE@@/api/token/" \
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -115,7 +115,7 @@ CaMeL AI CLI 提供以下主要功能：
   import json
 
   # API 配置
-  api_url = "https://camel.kr777.top"
+  api_url = "@@CONSOLE_BASE@@"
   access_token = "YOUR_ACCESS_TOKEN"
   headers = {
       "Authorization": access_token,
@@ -145,7 +145,7 @@ CaMeL AI CLI 提供以下主要功能：
   ```
 
   ```shell CLI theme={null}
-  python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action create_token --name "新Key名称" --expires -1 --quota 500000
+  python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action create_token --name "新Key名称" --expires -1 --quota 500000
   ```
 </CodeGroup>
 
@@ -153,7 +153,7 @@ CaMeL AI CLI 提供以下主要功能：
 
 <CodeGroup>
   ```shell Curl theme={null}
-  curl -X GET "https://camel.kr777.top/api/token/?num=20" \ #修改num参数可以调整输出的数据数量。
+  curl -X GET "@@CONSOLE_BASE@@/api/token/?num=20" \ #修改num参数可以调整输出的数据数量。
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -H "Content-Type: application/json"
   ```
@@ -163,7 +163,7 @@ CaMeL AI CLI 提供以下主要功能：
   import json
 
   # API 配置
-  api_url = "https://camel.kr777.top"
+  api_url = "@@CONSOLE_BASE@@"
   access_token = "YOUR_ACCESS_TOKEN"
   headers = {
       "Authorization": access_token,
@@ -189,7 +189,7 @@ CaMeL AI CLI 提供以下主要功能：
   ```
 
   ```shell CLI theme={null}
-  python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action get_tokens
+  python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action get_tokens
   ```
 </CodeGroup>
 
@@ -197,7 +197,7 @@ CaMeL AI CLI 提供以下主要功能：
 
 <CodeGroup>
   ```shell Curl theme={null}
-  curl -X GET "https://camel.kr777.top/api/token/search?keyword=搜索关键词" \
+  curl -X GET "@@CONSOLE_BASE@@/api/token/search?keyword=搜索关键词" \
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -H "Content-Type: application/json"
   ```
@@ -207,7 +207,7 @@ CaMeL AI CLI 提供以下主要功能：
   import json
 
   # API 配置
-  api_url = "https://camel.kr777.top"
+  api_url = "@@CONSOLE_BASE@@"
   access_token = "YOUR_ACCESS_TOKEN"
   headers = {
       "Authorization": access_token,
@@ -236,7 +236,7 @@ CaMeL AI CLI 提供以下主要功能：
   ```
 
   ```shell CLI theme={null}
-  python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action search_tokens --query "搜索关键词"
+  python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action search_tokens --query "搜索关键词"
   ```
 </CodeGroup>
 
@@ -244,7 +244,7 @@ CaMeL AI CLI 提供以下主要功能：
 
 <CodeGroup>
   ```shell Curl theme={null}
-  curl -X PUT "https://camel.kr777.top/api/token/" \
+  curl -X PUT "@@CONSOLE_BASE@@/api/token/" \
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -261,7 +261,7 @@ CaMeL AI CLI 提供以下主要功能：
   import json
 
   # API 配置
-  api_url = "https://camel.kr777.top"
+  api_url = "@@CONSOLE_BASE@@"
   access_token = "YOUR_ACCESS_TOKEN"
   headers = {
       "Authorization": access_token,
@@ -294,7 +294,7 @@ CaMeL AI CLI 提供以下主要功能：
   ```
 
   ```shell CLI theme={null}
-  python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action update_token --id "Key_ID" --name "新名称" --expires 86400 --quota 100000 --status 1
+  python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action update_token --id "Key_ID" --name "新名称" --expires 86400 --quota 100000 --status 1
   ```
 </CodeGroup>
 
@@ -302,7 +302,7 @@ CaMeL AI CLI 提供以下主要功能：
 
 <CodeGroup>
   ```shell Cur theme={null}
-  curl -X DELETE "https://camel.kr777.top/api/token/Key_ID" \
+  curl -X DELETE "@@CONSOLE_BASE@@/api/token/Key_ID" \
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -H "Content-Type: application/json"
   ```
@@ -312,7 +312,7 @@ CaMeL AI CLI 提供以下主要功能：
   import json
 
   # API 配置
-  api_url = "https://camel.kr777.top"
+  api_url = "@@CONSOLE_BASE@@"
   access_token = "YOUR_ACCESS_TOKEN"
   headers = {
       "Authorization": access_token,
@@ -334,7 +334,7 @@ CaMeL AI CLI 提供以下主要功能：
   ```
 
   ```shell CLI theme={null}
-  python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action delete_token --id "Key_ID"
+  python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action delete_token --id "Key_ID"
   ```
 </CodeGroup>
 
@@ -342,7 +342,7 @@ CaMeL AI CLI 提供以下主要功能：
 
 <CodeGroup>
   ```shell Curl theme={null}
-  curl -X GET "https://camel.kr777.top/api/user/token" \
+  curl -X GET "@@CONSOLE_BASE@@/api/user/token" \
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -H "Content-Type: application/json"
   ```
@@ -352,7 +352,7 @@ CaMeL AI CLI 提供以下主要功能：
   import json
 
   # API 配置
-  api_url = "https://camel.kr777.top"
+  api_url = "@@CONSOLE_BASE@@"
   access_token = "YOUR_ACCESS_TOKEN"
   headers = {
       "Authorization": access_token,
@@ -373,7 +373,7 @@ CaMeL AI CLI 提供以下主要功能：
   ```
 
   ```shell CLI theme={null}
-  python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action get_user_token
+  python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action get_user_token
   ```
 </CodeGroup>
 
@@ -383,7 +383,7 @@ CaMeL AI CLI 提供以下主要功能：
 
 <CodeGroup>
   ```shell Curl theme={null}
-  curl -X GET "https://camel.kr777.top/api/models" \
+  curl -X GET "@@CONSOLE_BASE@@/api/models" \
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -H "Content-Type: application/json"
   ```
@@ -393,7 +393,7 @@ CaMeL AI CLI 提供以下主要功能：
   import json
 
   # API 配置
-  api_url = "https://camel.kr777.top"
+  api_url = "@@CONSOLE_BASE@@"
   access_token = "YOUR_ACCESS_TOKEN"
   headers = {
       "Authorization": access_token,
@@ -425,7 +425,7 @@ CaMeL AI CLI 提供以下主要功能：
   ```
 
   ```shell CLI theme={null}
-  python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action get_models
+  python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action get_models
   ```
 </CodeGroup>
 
@@ -433,7 +433,7 @@ CaMeL AI CLI 提供以下主要功能：
 
 <CodeGroup>
   ```shell Curl theme={null}
-  curl -X GET "https://camel.kr777.top/api/user/available_models" \
+  curl -X GET "@@CONSOLE_BASE@@/api/user/available_models" \
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -H "Content-Type: application/json"
   ```
@@ -443,7 +443,7 @@ CaMeL AI CLI 提供以下主要功能：
   import json
 
   # API 配置
-  api_url = "https://camel.kr777.top"
+  api_url = "@@CONSOLE_BASE@@"
   access_token = "YOUR_ACCESS_TOKEN"
   headers = {
       "Authorization": access_token,
@@ -466,7 +466,7 @@ CaMeL AI CLI 提供以下主要功能：
   ```
 
   ```shell CLI theme={null}
-  python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action get_available_models
+  python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action get_available_models
   ```
 </CodeGroup>
 
@@ -475,7 +475,7 @@ CaMeL AI CLI 提供以下主要功能：
 所有 CLI 命令都支持以 JSON 格式输出结果，方便进行程序化处理：
 
 ```bash  theme={null}
-python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN" --action get_balance --json
+python camelai_cli.py --url "@@CONSOLE_BASE@@" --token "YOUR_ACCESS_TOKEN" --action get_balance --json
 ```
 
 ## 故障排除
@@ -485,7 +485,7 @@ python camelai_cli.py --url "https://camel.kr777.top" --token "YOUR_ACCESS_TOKEN
 1. **连接问题**：如果主域名连接失败，尝试使用备用域名：
 
    ```bash  theme={null}
-   python camelai_cli.py --url "https://api.kr777.top" --token "YOUR_ACCESS_TOKEN" --action get_balance
+   python camelai_cli.py --url "@@API_BASE@@" --token "YOUR_ACCESS_TOKEN" --action get_balance
    ```
 2. **访问令牌无效**：确保提供的访问令牌是从 CaMeL AI 网站获取的有效密钥。访问令牌格式通常是 `fd***` 这样的形式。
 3. **权限不足**：某些操作可能需要特定的权限，请确保您的账户有足够的权限。

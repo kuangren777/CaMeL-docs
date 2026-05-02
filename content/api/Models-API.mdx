@@ -9,7 +9,7 @@ description: "本API文档提供了对模型管理接口的详细说明，包括
 
 ### 获取模型信息平台
 
-**接口地址**：`GET https://camel.kr777.top/api/v1/models`
+**接口地址**：`GET @@CONSOLE_BASE@@/api/v1/models`
 
 **功能描述**：获取所有可用模型的详细信息。
 
@@ -74,7 +74,7 @@ description: "本API文档提供了对模型管理接口的详细说明，包括
   import requests
 
   # 接口地址
-  url = "https://camel.kr777.top/api/v1/models"
+  url = "@@CONSOLE_BASE@@/api/v1/models"
 
   response = requests.get(url)
   print(response.json())
@@ -92,7 +92,7 @@ description: "本API文档提供了对模型管理接口的详细说明，包括
   ```
 
   ```javascript JavaScript theme={null}
-  fetch('https://camel.kr777.top/api/v1/models')
+  fetch('@@CONSOLE_BASE@@/api/v1/models')
     .then(response => response.json())
     .then(data => console.log(data));
 
@@ -105,15 +105,15 @@ description: "本API文档提供了对模型管理接口的详细说明，包括
     sort_order: 'desc' 
   });
 
-  fetch(`https://camel.kr777.top/api/v1/models?${params}`)
+  fetch(`@@CONSOLE_BASE@@/api/v1/models?${params}`)
     .then(response => response.json())
     .then(data => console.log(data));
   ```
 
   ```bash cURL theme={null}
-  curl -X GET "https://camel.kr777.top/api/v1/models"
+  curl -X GET "@@CONSOLE_BASE@@/api/v1/models"
 
-  curl -X GET "https://camel.kr777.top/api/v1/models?type=llm&modalities=text&model=gpt-5&features=thinking&sort_by=context_length&sort_order=desc"
+  curl -X GET "@@CONSOLE_BASE@@/api/v1/models?type=llm&modalities=text&model=gpt-5&features=thinking&sort_by=context_length&sort_order=desc"
   ```
 </CodeGroup>
 
@@ -233,23 +233,23 @@ description: "本API文档提供了对模型管理接口的详细说明，包括
 
 <CodeGroup>
   ```bash 获取所有大语言模型 theme={null}
-  GET https://camel.kr777.top/api/v1/models?type=llm
+  GET @@CONSOLE_BASE@@/api/v1/models?type=llm
   ```
 
   ```bash 获取适合编程的模型，按上下文长度排序 theme={null}
-  GET https://camel.kr777.top/api/v1/models?tag=coding&sort_by=context_length&sort_order=desc
+  GET @@CONSOLE_BASE@@/api/v1/models?tag=coding&sort_by=context_length&sort_order=desc
   ```
 
   ```bash 搜索特定模型 theme={null}
-  GET https://camel.kr777.top/api/v1/models?model=gpt-5
+  GET @@CONSOLE_BASE@@/api/v1/models?model=gpt-5
   ```
 
   ```bash 复合条件查询 theme={null}
-  GET https://camel.kr777.top/api/v1/models?type=llm&modalities=text,image&features=function_calling&sort_by=model_ratio&sort_order=asc
+  GET @@CONSOLE_BASE@@/api/v1/models?type=llm&modalities=text,image&features=function_calling&sort_by=model_ratio&sort_order=asc
   ```
 
   ```bash 编程模型智能排序 theme={null}
-  GET https://camel.kr777.top/api/v1/models?sort_by=coding
+  GET @@CONSOLE_BASE@@/api/v1/models?sort_by=coding
   ```
 </CodeGroup>
 
@@ -268,7 +268,7 @@ description: "本API文档提供了对模型管理接口的详细说明，包括
 ```bash  theme={null}
 # 使用ETag进行条件请求
 curl -H "If-None-Match: \"abc123...\"" \
-     https://camel.kr777.top/api/v1/models
+     @@CONSOLE_BASE@@/api/v1/models
 ```
 
 > 如果内容未更新，服务器返回 `304 Not Modified` 状态码。

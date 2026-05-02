@@ -15,7 +15,7 @@ description: "Gemini 漫游指南：关于本站的 Gemini 调用细节，在此
 ```py  theme={null}
 client = genai.Client(
     api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-    http_options={"base_url": "https://camel.kr777.top/gemini"},
+    http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
 )
 ```
 
@@ -24,7 +24,7 @@ client = genai.Client(
 ```py  theme={null}
 client = OpenAI(
     api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-    base_url="https://api.kr777.top",
+    base_url="@@API_BASE@@",
 )
 ```
 
@@ -60,7 +60,7 @@ Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资�
 
   client = genai.Client(
       api_key=API_KEY,
-      http_options={"base_url": "https://camel.kr777.top/gemini"},  
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},  
   )
 
   prompt = (
@@ -101,7 +101,7 @@ Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资�
 
   client = genai.Client(
       api_key=API_KEY,
-      http_options={"base_url": "https://camel.kr777.top/gemini"}
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"}
   )
 
   prompt = (
@@ -138,7 +138,7 @@ Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资�
 
   client = genai.Client(
       api_key=API_KEY,
-      http_options={"base_url": "https://camel.kr777.top/gemini"}
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"}
   )
 
   response = client.models.generate_content(
@@ -183,7 +183,7 @@ Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资�
 
   client = genai.Client(
       api_key=API_KEY,
-      http_options={"base_url": "https://camel.kr777.top/gemini"}
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"}
   )
 
   response = client.models.generate_content(
@@ -224,7 +224,7 @@ Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资�
   def generate():
       client = genai.Client(
           api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-          http_options={"base_url": "https://camel.kr777.top/gemini"},
+          http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
       )
 
       model = "gemini-2.0-flash"
@@ -253,7 +253,7 @@ Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资�
   def generate():
       client = genai.Client(
           api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-          http_options={"base_url": "https://camel.kr777.top/gemini"},
+          http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
       )
 
       model = "gemini-2.0-flash"
@@ -287,7 +287,7 @@ Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资�
   def generate():
       client = genai.Client(
           api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-          http_options={"base_url": "https://camel.kr777.top/gemini"},
+          http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
       )
 
       model = "gemini-2.5-flash-preview-04-17" #gemini-2.5-pro-preview-03-25、gemini-2.5-flash-preview-04-17
@@ -324,7 +324,7 @@ Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资�
   def generate():
       client = genai.Client(
           api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-          http_options={"base_url": "https://camel.kr777.top/gemini"},
+          http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
       )
 
       model = "gemini-2.5-pro-preview-03-25"
@@ -358,7 +358,7 @@ Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资�
   def generate():
       client = genai.Client(
           api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-          http_options={"base_url": "https://camel.kr777.top/gemini"},
+          http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
       )
 
       model = "gemini-2.5-pro-preview-05-06"
@@ -422,7 +422,7 @@ Openai 兼容方式调用参考如下：
 
   client = OpenAI(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   completion = client.chat.completions.create(
@@ -443,7 +443,7 @@ Openai 兼容方式调用参考如下：
 
   client = OpenAI(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   completion = client.chat.completions.create(
@@ -461,7 +461,7 @@ Openai 兼容方式调用参考如下：
   ```
 
   ```shell Curl-基础调用 theme={null}
-  curl -X POST https://api.kr777.top/chat/completions \
+  curl -X POST @@API_BASE@@/chat/completions \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer sk-***" \
     -d '{
@@ -476,7 +476,7 @@ Openai 兼容方式调用参考如下：
   ```
 
   ```shell Curl-Thinking 显示 theme={null}
-  curl https://api.kr777.top/chat/completions \
+  curl @@API_BASE@@/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer sk-***" \
   -d '{
@@ -531,7 +531,7 @@ Openai 兼容方式调用参考如下：
 
   client = genai.Client(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      http_options={"base_url": "https://camel.kr777.top/gemini"}
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"}
   )
 
   response = client.models.generate_content(
@@ -575,7 +575,7 @@ Openai 兼容方式调用参考如下：
 
   client = genai.Client(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      http_options={"base_url": "https://camel.kr777.top/gemini"}
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"}
   )
 
   response = client.models.generate_content(
@@ -609,7 +609,7 @@ Openai 兼容方式调用参考如下：
 
   client = genai.Client(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      http_options={"base_url": "https://camel.kr777.top/gemini"}
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"}
   )
 
   response = client.models.generate_content(
@@ -638,7 +638,7 @@ Openai 兼容方式调用参考如下：
 
   client = genai.Client(
       api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-      http_options={"base_url": "https://camel.kr777.top/gemini"}
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"}
   )
 
   response = client.models.generate_content(
@@ -678,7 +678,7 @@ Gemini 可以同时处理各种类型的输入数据，包括文本、图片和�
 
   client = genai.Client(
       api_key="sk-****",   
-      http_options={"base_url": "https://camel.kr777.top/gemini"},
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
   )
 
   myfile = client.files.upload(file="path/to/sample.mp3")
@@ -695,7 +695,7 @@ Gemini 可以同时处理各种类型的输入数据，包括文本、图片和�
 
   client = genai.Client(
       api_key="sk-****",   
-      http_options={"base_url": "https://camel.kr777.top/gemini"},
+      http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
   )
 
   myfile = client.files.upload(file='path/to/sample.mp3')
@@ -729,7 +729,7 @@ with open(file_path, "rb") as f:
 
 client = genai.Client(
     api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
-    http_options={"base_url": "https://camel.kr777.top/gemini"}
+    http_options={"base_url": "@@CONSOLE_BASE@@/gemini"}
 )
 
 response = client.models.generate_content(
@@ -790,7 +790,7 @@ Gemini 在原生 API 下默认启用了**隐式上下文缓存**，无需开发�
 from google import genai
 
 client = genai.Client(
-    http_options={"base_url": "https://camel.kr777.top/gemini"},
+    http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
     api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
 )
 
@@ -858,7 +858,7 @@ generate_content_sync()
   # Configure the client
   client = OpenAI(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   # Send request with function declarations using OpenAI compatible format
@@ -920,7 +920,7 @@ CompletionUsage(completion_tokens=28, prompt_tokens=111, total_tokens=139, compl
   def generate():
       client = genai.Client(
           api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-          http_options={"base_url": "https://camel.kr777.top/gemini"},
+          http_options={"base_url": "@@CONSOLE_BASE@@/gemini"},
       )
 
       model = "gemini-2.5-pro-preview-03-25"
@@ -960,7 +960,7 @@ CompletionUsage(completion_tokens=28, prompt_tokens=111, total_tokens=139, compl
 
   client = OpenAI(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://api.kr777.top",
+      base_url="@@API_BASE@@",
   )
 
   completion = client.chat.completions.create(

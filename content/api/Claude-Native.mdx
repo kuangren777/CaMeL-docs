@@ -107,7 +107,7 @@ extra_headers={
 
 <CodeGroup>
   ```shell Curl theme={null}
-  curl https://api.kr777.top/messages \
+  curl @@API_BASE@@/messages \
        --header "x-api-key: $ANTHROPIC_API_KEY" \ # 换成你在 CaMeL AI 生成的密钥
        --header "anthropic-version: 2023-06-01" \
        --header "content-type: application/json" \
@@ -126,7 +126,7 @@ extra_headers={
 
   client = anthropic.Anthropic(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://camel.kr777.top"
+      base_url="@@CONSOLE_BASE@@"
   )
   message = client.messages.create(
       model="claude-3-5-sonnet-20241022",
@@ -143,7 +143,7 @@ extra_headers={
 
   client = anthropic.Anthropic(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://camel.kr777.top"
+      base_url="@@CONSOLE_BASE@@"
   )
 
   with client.messages.stream(
@@ -165,7 +165,7 @@ extra_headers={
 
   client = anthropic.Anthropic(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://camel.kr777.top"
+      base_url="@@CONSOLE_BASE@@"
   )
 
   response = client.messages.create(
@@ -292,19 +292,19 @@ elif response.stop_reason == "end_turn":
 ## 在应用中使用（以 Lobe-Chat 为例）
 
 * 进入设置页面选择模型服务商 Claude
-* API key 输入[本站的 Key](https://camel.kr777.top/token)
+* API key 输入[本站的 Key](@@CONSOLE_BASE@@/token)
 * 接口代理地址，直接输入下方的网址：
 
 ```
-https://camel.kr777.top
+@@CONSOLE_BASE@@
 ```
 
 * 建议打开「使用客户端请求模式」
 * 最后在模型列表添加自己要使用的模型（建议从我们网站的设置页面复制粘贴模型名后选择）\\
 
-  <img src="https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla1.png?fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=a85f2cfa7552e99badbc69a9a8af8295" alt="图片" data-og-width="1225" width="1225" data-og-height="613" height="613" data-path="public/cla1.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla1.png?w=280&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=5401bc82399f07b39890b586b90bee49 280w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla1.png?w=560&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=271e889cd06f2bfd40787bc69c4759b3 560w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla1.png?w=840&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=fa07bc0ea2ea527cb8459cebd6acf7c2 840w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla1.png?w=1100&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=3007724e7db953cffbceb788e8a2f8a3 1100w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla1.png?w=1650&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=1351d7ed6ec38cf0ae741eb89d89a8be 1650w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla1.png?w=2500&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=cb302d83ff17399463b022a927d138b3 2500w" />
+  > 📷 [图片：图片]
 
-  <img src="https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla2.png?fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=c18c5b40b30b914a185629cb708735ba" alt="图片" data-og-width="1102" width="1102" data-og-height="699" height="699" data-path="public/cla2.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla2.png?w=280&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=d5549332344aa2316c32c2b6f88df014 280w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla2.png?w=560&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=e4e6fb8dce05df32b68c859c965716ee 560w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla2.png?w=840&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=6991f16673986cf46d7601c2ec805307 840w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla2.png?w=1100&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=719cc4e362338288fafc8f6565b99edb 1100w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla2.png?w=1650&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=b4a5263d633f9ca9c1e764cf533b413a 1650w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/cla2.png?w=2500&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=d476bf2c70f07f80ad8f479038012532 2500w" />
+  > 📷 [图片：图片]
 
 ## Claude 文本编辑工具
 
@@ -359,7 +359,7 @@ pip install anthropic
 
   client = anthropic.Anthropic(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://camel.kr777.top"
+      base_url="@@CONSOLE_BASE@@"
   )
 
   response = client.messages.create(
@@ -389,7 +389,7 @@ pip install anthropic
 
   client = anthropic.Anthropic(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://camel.kr777.top"
+      base_url="@@CONSOLE_BASE@@"
   )
 
   response = client.messages.create(
@@ -415,7 +415,7 @@ pip install anthropic
   ```
 
   ```shell Curl-Claude 4 theme={null}
-  curl -X POST https://api.kr777.top/messages \
+  curl -X POST @@API_BASE@@/messages \
     -H "Content-Type: application/json" \
     -H "x-api-key: xxx" \
     -H "anthropic-version: 2023-06-01" \
@@ -438,7 +438,7 @@ pip install anthropic
   ```
 
   ```shell Curl-Claude 3.7 theme={null}
-  curl -X POST https://api.kr777.top/messages \
+  curl -X POST @@API_BASE@@/messages \
     -H "Content-Type: application/json" \
     -H "x-api-key: xxx" \
     -H "anthropic-version: 2023-06-01" \

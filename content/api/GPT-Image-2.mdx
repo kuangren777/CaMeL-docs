@@ -9,7 +9,7 @@ description: "CaMeL AI 的 gpt-image-2 文生图接口，OpenAI 兼容格式"
 
 | 项目 | 值 |
 | --- | --- |
-| API 域名 | `https://camel.kr777.top` |
+| API 域名 | `@@CONSOLE_BASE@@` |
 | 模型名称 | `gpt-image-2` |
 | 接口类型 | OpenAI 兼容接口 |
 
@@ -17,11 +17,11 @@ description: "CaMeL AI 的 gpt-image-2 文生图接口，OpenAI 兼容格式"
 
 ### 1. 获取 API Key
 
-在 [CaMeL AI 平台](https://camel.kr777.top/token) 注册并获取 API Key（格式：`sk-xxxxxx...`）。
+在 [CaMeL AI 平台](@@CONSOLE_BASE@@/token) 注册并获取 API Key（格式：`sk-xxxxxx...`）。
 
 ### 2. 发起请求
 
-**端点：** `POST https://camel.kr777.top/v1/images/generations`
+**端点：** `POST @@CONSOLE_BASE@@/v1/images/generations`
 
 **请求头：**
 
@@ -56,7 +56,7 @@ Content-Type: application/json
   import base64
   from pathlib import Path
 
-  API_BASE = "https://camel.kr777.top/v1"
+  API_BASE = "@@CONSOLE_BASE@@/v1"
   API_KEY = "sk-your-api-key"  # 替换为你的 API Key
 
   def generate_image(prompt: str, output_file: str = "output.png"):
@@ -96,7 +96,7 @@ Content-Type: application/json
   const axios = require('axios');
   const fs = require('fs');
 
-  const API_BASE = 'https://camel.kr777.top/v1';
+  const API_BASE = '@@CONSOLE_BASE@@/v1';
   const API_KEY = 'sk-your-api-key';  // 替换为你的 API Key
 
   async function generateImage(prompt, outputFile = 'output.png') {
@@ -137,7 +137,7 @@ Content-Type: application/json
   ```
 
   ```bash cURL theme={null}
-  curl -X POST https://camel.kr777.top/v1/images/generations \
+  curl -X POST @@CONSOLE_BASE@@/v1/images/generations \
     -H "Authorization: Bearer sk-your-api-key" \
     -H "Content-Type: application/json" \
     -d '{
@@ -225,8 +225,8 @@ Content-Type: application/json
 
 ## 技术支持
 
-* **官网：** [https://camel.kr777.top](https://camel.kr777.top)
-* **文档：** [https://camel.kr777.top/docs](https://camel.kr777.top/docs)
+* **官网：** [@@CONSOLE_BASE@@](@@CONSOLE_BASE@@)
+* **文档：** [@@CONSOLE_BASE@@/docs](@@CONSOLE_BASE@@/docs)
 * **问题反馈：** 联系客服或提交工单
 
 ---

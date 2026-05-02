@@ -9,7 +9,7 @@ description: "下载地址：https://www.langchain.com/"
 
 ```
 API_SECRET_KEY = "sk-pvMtoVO******66249058b93C766F2D70167"
-BASE_URL = "https://api.kr777.top"; #CaMeL AI的base-url
+BASE_URL = "@@API_BASE@@"; #CaMeL AI的base-url
 
 os.environ["OPENAI_API_KEY"] = API_SECRET_KEY
 os.environ["OPENAI_BASE_URL"] = BASE_URL
@@ -20,7 +20,7 @@ os.environ["OPENAI_BASE_URL"] = BASE_URL
 ```from langchain.chat_models import ChatOpenAI theme={null}
 
 llm = ChatOpenAI(
-    openai_api_base="https://api.kr777.top", # 注意，末尾要加 /v1
+    openai_api_base="@@API_BASE@@", # 注意，末尾要加 /v1
     openai_api_key="sk-3133f******fee269b71d",
 )
 
@@ -47,7 +47,7 @@ import time
 from langchain.llms import OpenAI
 
 API_SECRET_KEY = "你在CaMeL AI的key";
-BASE_URL = "https://api.kr777.top"; #CaMeL AI的base-url
+BASE_URL = "@@API_BASE@@"; #CaMeL AI的base-url
 
 os.environ["OPENAI_API_KEY"] = API_SECRET_KEY
 os.environ["OPENAI_API_BASE"] = BASE_URL

@@ -13,7 +13,7 @@ description: "提示缓存显著减少了重复任务或包含一致元素的提
 
 <CodeGroup>
   ```shell Curl theme={null}
-  curl https://api.kr777.top/messages \
+  curl @@API_BASE@@/messages \
     -H "content-type: application/json" \
     -H "x-api-key: CAMELAI_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
@@ -51,7 +51,7 @@ description: "提示缓存显著减少了重复任务或包含一致元素的提
 
   client = anthropic.Anthropic(
       api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
-      base_url="https://camel.kr777.top"
+      base_url="@@CONSOLE_BASE@@"
   )
 
   # 使用缓存的流式响应
@@ -105,7 +105,7 @@ description: "提示缓存显著减少了重复任务或包含一致元素的提
   ```py Python (Requests - 备选) theme={null}
   import requests
 
-  url = "https://api.kr777.top/messages"
+  url = "@@API_BASE@@/messages"
   headers = {
       "content-type": "application/json",
       "x-api-key": "sk-***", # 换成你在 CaMeL AI 生成的密钥
@@ -244,7 +244,7 @@ description: "提示缓存显著减少了重复任务或包含一致元素的提
 要使用扩展缓存，需要在请求中添加 `extended-cache-ttl-2025-04-11` 作为 beta header，然后在 cache\_control 定义中包含 ttl：
 
 ```shell  theme={null}
-curl https://api.kr777.top/messages \
+curl @@API_BASE@@/messages \
   -H "content-type: application/json" \
   -H "x-api-key: CAMELAI_API_KEY" \
   -H "anthropic-version: 2023-06-01" \

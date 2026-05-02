@@ -107,7 +107,7 @@ import json
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.kr777.top",
+    base_url="@@API_BASE@@",
     api_key=os.environ.get("CAMELAI_API_KEY", "sk-***"),
 )
 
@@ -198,7 +198,7 @@ import json
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.kr777.top",
+    base_url="@@API_BASE@@",
     api_key=os.environ.get("CAMELAI_API_KEY", "sk-***"),
 )
 
@@ -561,7 +561,7 @@ budget_tokens = max(min(max_tokens × effort_ratio, 128000), 1024)
 在请求头中添加 `anthropic-beta`，值为对应的 beta 功能标识符：
 
 ```json  theme={null}
-curl "https://api.kr777.top/chat/completions" \
+curl "@@API_BASE@@/chat/completions" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer sk-***" \
   -H "anthropic-beta: context-1m-2025-08-07" \
