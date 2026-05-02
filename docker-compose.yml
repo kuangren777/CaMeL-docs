@@ -1,0 +1,8 @@
+services:
+  docs:
+    build: .
+    image: camel-docs:latest
+    container_name: camel-docs
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

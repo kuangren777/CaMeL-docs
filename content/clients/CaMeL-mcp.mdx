@@ -1,0 +1,90 @@
+---
+title: "CaMeL AI 图片生成 MCP"
+description: "CaMeL AI 使用统一接口的方式整合了市面上主流的图片生成 API，以 MCP 的方式封装设计，让开发者们可以更便利地整合到与 LLM 的交互中，用户使用自然语音输入，即可触发图片生成。"
+---
+
+>  
+
+## 简介
+
+CaMeL AI 使用统一接口的方式整合了市面上主流的图片生成 API，以 MCP 的方式封装设计，让开发者们可以更便利地整合到与 LLM 的交互中，用户使用自然语音输入，即可触发图片生成。
+
+目前整合的模型如下：
+
+* openai/gpt-image-1
+* bfl/FLUX.1-Kontext-pro
+* google/imagen-4.0-ultra-generate-preview-06-06
+* google/imagen-4.0-generate-preview-06-06
+* ideogram/V3
+
+<Note>
+  gpt-image-1 模型的返回结果为 base64 编码，在 Claude Desktop 中可能会因为太长导致报错。目前建议优先使用 V3 / Flux / Imagen。
+</Note>
+
+## 1️⃣ 安装
+
+下面是一些常用 AI 工具的 MCP 安装方式示例，运行指令之前需要将 `sk-***` 替换为你的 CaMeL AI 密钥。
+
+安装之后都需要重启工具才能生效。
+
+### 安装到 Claude Code
+
+终端运行安装指令
+
+```shell  theme={null}
+claude mcp add --transport http camelai-api https://camel.kr777.top/mcp/ \
+  --header "Authorization: Bearer sk-***" 
+```
+
+使用 `claude` 命令启动 Claude Code 之后，输入 `/mcp` 即可确认
+
+### 安装到 Claude Desktop
+
+头像 → Settings → Developer → Edit Config → 加入以下配置
+
+```shell  theme={null}
+"camelai-mcp-stdio": {
+    "command": "npx",
+    "args": ["-y", "@camelai/mcp"],
+    "env": {
+      "CAMELAI_API_KEY": "sk-***"
+    }
+}
+```
+
+### 安装到 Warp AI
+
+头像 → Settings → AI → Manage MCP Servers → Add → 加入以下配置
+
+```shell  theme={null}
+{
+  "camelai-mcp-stdio": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "@camelai/mcp"
+    ],
+    "env": {
+      "CAMELAI_API_KEY": "sk-***"
+    },
+    "working_directory": null
+  }
+```
+
+2️⃣ 使用
+
+1. 使用自然语言输入，指定 mcp 和目标，比如：
+
+```shell prompt theme={null}
+使用 camelai mcp 绘制一只可爱小猫在花园里玩耍，Pixar 3d 卡通风格，3:2,, 自动为我优化 prompt 并执行
+```
+
+Claude Desktop 使用示例：
+<img src="https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/aihubmix-mcp.png?fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=3cce4e79795fd84bf31d71466a626a99" alt="使用 CaMeL AI MCP" data-og-width="3620" width="3620" data-og-height="2552" height="2552" data-path="public/aihubmix-mcp.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/aihubmix-mcp.png?w=280&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=08caafa7aaa8271f31a55bc7841d3422 280w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/aihubmix-mcp.png?w=560&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=0330869256279448e0d189b8e81d3d1c 560w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/aihubmix-mcp.png?w=840&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=351d9ab43e82b19acdcfca7ab271f494 840w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/aihubmix-mcp.png?w=1100&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=1cd3f2fc7763a64b2e60a56c49c04f0f 1100w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/aihubmix-mcp.png?w=1650&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=3aedeb55942554f9b2f7be10ecda5467 1650w, https://mintcdn.com/aihubmix/UgvkHPDoK6o04763/public/aihubmix-mcp.png?w=2500&fit=max&auto=format&n=UgvkHPDoK6o04763&q=85&s=483e25c12799ff830d06bdd2dc185bf9 2500w" />
+
+2. 可以指定目标模型，比如 flux-kontext-max、ideogram/V3 等，不需要精确对应，LLM 会自动匹配关键字眼
+3. 指定更多约束，比如
+
+```shell prompt theme={null}
+影视光、低视角、模型 V3，生成 2 张
+```

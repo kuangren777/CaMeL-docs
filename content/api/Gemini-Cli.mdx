@@ -1,0 +1,78 @@
+---
+title: "Gemini Cli"
+description: "用 CaMeL AI 为 Gemini CLI 提供强劲动力，享受稳定高效的 Gemini 模型服务。"
+---
+
+>  
+
+用 CaMeL AI 为 Gemini CLI 提供强劲动力，享受稳定高效的 Gemini 模型服务。
+
+## 快速配置指引：
+
+### 1️⃣ 全局安装 npm 包
+
+终端运行：
+
+```shell  theme={null}
+npm install -g @google/gemini-cli
+```
+
+确保你的 Node.js 版本 >= 18
+
+更多详细说明可以参考：
+
+1. [官方仓库](https://github.com/google-gemini/gemini-cli)
+2. [详细配置](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/configuration.md)
+
+### 2️⃣ 环境变量配置
+
+在系统环境变量中填入 CaMeL AI 密钥和转发地址，密钥可以在 CaMeL AI [「Keys」页面](https://camel.kr777.top/token) 生成。
+
+比如在 \~/.zshrc 中添加：
+
+```shell  theme={null}
+export GOOGLE_GEMINI_BASE_URL="https://camel.kr777.top/gemini"
+export GEMINI_API_KEY="sk-***"
+```
+
+<Tip>
+  对于 Mac 用户，你可以在`用户名`目录通过快捷键 `⌘ + ⇧ + .` 显示隐藏的 .zshrc 文件，用系统的「文本编辑」APP 打开并添加上述内容。
+</Tip>
+
+### 3️⃣ 使配置生效
+
+添加配置之后，终端执行 `source ~/.zshrc`，回车即可。
+
+### 4️⃣ 终端启动
+
+终端输入
+
+```shell  theme={null}
+gemini
+```
+
+## 初始化配置
+
+### 选择接入方式
+
+<img src="https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-auth.png?fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=a21340675ee5356f93f8bdb927c091f2" alt="接入方式" data-og-width="1790" width="1790" data-og-height="1670" height="1670" data-path="public/gemini-cli-auth.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-auth.png?w=280&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=031992079dd7a0e54fd71c7d5093cc1d 280w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-auth.png?w=560&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=3ac9307bdbd24f1cd462b646591ee94e 560w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-auth.png?w=840&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=8599bbaf9014118f3b6ef0454014e7e6 840w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-auth.png?w=1100&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=fcd4832b03a926cba44cd89c005e96d2 1100w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-auth.png?w=1650&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=37207597b574a234ac4cb07d0781532f 1650w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-auth.png?w=2500&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=31c89cd02eb2185c4be6b387b4aa259d 2500w" />
+
+启动之后输入 `/auth`，回车，选择 `Gemini API Key （AI Studio）`
+
+```shell  theme={null}
+○ Login with Google
+● Gemini API Key (AI Studio)
+○ vertex AI
+```
+
+<Note>
+  你可以随时用 `/auth` 命令来切换授权方式。
+</Note>
+
+### 启动成功
+
+完成以上初始化即可正常使用。
+
+<img src="https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-aihubmix.png?fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=32e267c9c8d37bf92ef61dd307cec482" alt="接入方式" data-og-width="1790" width="1790" data-og-height="1670" height="1670" data-path="public/gemini-cli-aihubmix.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-aihubmix.png?w=280&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=e370e293f39d6abf08a6da772aa2c30e 280w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-aihubmix.png?w=560&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=44a74dfac7e83af030533cc729854f1f 560w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-aihubmix.png?w=840&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=827ee4de0faa6bac52bb2711137cd601 840w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-aihubmix.png?w=1100&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=26457e392f680b4ffd73ba8d861afa10 1100w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-aihubmix.png?w=1650&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=5e2cb138b1c87d644b153c8ff6932bdc 1650w, https://mintcdn.com/aihubmix/_Cbum_77AgsRh-CI/public/gemini-cli-aihubmix.png?w=2500&fit=max&auto=format&n=_Cbum_77AgsRh-CI&q=85&s=2e0bfb7327031a9263a2eb21b3785ee4 2500w" />
+
+祝你使用愉快！

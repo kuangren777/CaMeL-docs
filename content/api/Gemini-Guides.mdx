@@ -1,0 +1,988 @@
+---
+title: "Gemini 指南"
+description: "Gemini 漫游指南：关于本站的 Gemini 调用细节，在此汇总。"
+---
+
+> Gemini 漫游指南：关于本站的 Gemini 调用细节，在此汇总。
+
+## Gemini 调用方式
+
+对于 Gemini 系列，我们提供原生调用和 Openai 兼容这 2 种调用方式。\
+使用前运行 `pip install google-genai` 或 `pip install -U google-genai`，安装（更新）原生依赖。
+
+1️⃣ 对于原生调用，我们的 Gemini 调用支持 AI Studio 和 VertexAI 自动路由。转发方法主要是在内部传入 CaMeL AI 密钥和请求链接。需要注意的是，这个链接和常规的 `base_url` 写法不同，请参考示例：
+
+```py  theme={null}
+client = genai.Client(
+    api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+    http_options={"base_url": "https://camel.kr777.top/gemini"},
+)
+```
+
+2️⃣ 对于 Openai 兼容格式，则维持通用的 `v1` 端点：
+
+```py  theme={null}
+client = OpenAI(
+    api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
+    base_url="https://api.kr777.top",
+)
+```
+
+3️⃣ 对于 2.5 系列，如果你需要显示推理过程，可以使用以下 2 种方式：
+
+1. 原生调用：传入 `include_thoughts=True`
+2. OpenAI 兼容方式：传入 `reasoning_effort`
+
+相关的详细调用可以参考下文的代码示例。
+
+## **Gemini 3 Pro** Image Preview 说明
+
+Gemini 3 Pro Image Preview（Nano Banana Pro 预览版）专为专业素材资源制作和复杂指令而设计。该模型具有以下特点：
+
+* 使用Google 搜索实时获取世界知识
+* 默认“思考”过程（在生成之前优化构图）
+* 能够生成分辨率高达 **4K** 的图像
+
+<Tip>
+  - 流式模式只返回推理过程，生成的图片不会在流式输出中出现。
+  - 如需获取图片数据，请使用非流式请求。
+</Tip>
+
+**Python 调用参考如下：**
+
+<CodeGroup>
+  ```python 文生图 theme={null}
+  import os
+  from google import genai
+  from google.genai import types
+
+  API_KEY = "<YOUR CAMELAI API KEY>"  
+
+  client = genai.Client(
+      api_key=API_KEY,
+      http_options={"base_url": "https://camel.kr777.top/gemini"},  
+  )
+
+  prompt = (
+      "Da Vinci style anatomical sketch of a dissected Monarch butterfly. "
+      "Detailed drawings of the head, wings, and legs on textured parchment with notes in English."
+  )
+
+  # 可选参数
+  aspect_ratio = "1:1"   # 支持: "1:1","2:3","3:2","3:4","4:3","4:5","5:4","9:16","16:9","21:9"
+  resolution   = "4K"    # 默认1K，支持: "1K", "2K", "4K"，注意：必须是大写“K”
+
+  response = client.models.generate_content(
+      model="gemini-3-pro-image-preview",
+      contents=prompt,   
+      config=types.GenerateContentConfig(
+          response_modalities=['TEXT', 'IMAGE'],
+          image_config=types.ImageConfig(
+              aspect_ratio=aspect_ratio,
+              image_size=resolution,
+          ),
+      ),
+  )
+
+  # 保存图片 & 输出文本
+  for part in response.parts:
+      if part.text:
+          print(part.text)  
+      elif image := part.as_image():
+          image.save("butterfly.png")
+          print("Image saved: butterfly.png")
+  ```
+
+  ```python 图生图 theme={null}
+  from google import genai
+  from PIL import Image
+
+  API_KEY = "<YOUR CAMELAI API KEY>"
+
+  client = genai.Client(
+      api_key=API_KEY,
+      http_options={"base_url": "https://camel.kr777.top/gemini"}
+  )
+
+  prompt = (
+      "Create a picture of my cat eating a nano-banana "
+      "in a fancy restaurant under the Gemini constellation."
+  )
+
+  image = Image.open("cat_image.jpg")
+
+  response = client.models.generate_content(
+      model="gemini-2.5-flash-image",
+      contents=[prompt, image],
+  )
+
+  # 保存图片 & 输出文本
+  for part in response.parts:
+      if part.text is not None:
+          print(part.text)
+      elif part.inline_data is not None:
+          image = part.as_image()
+          image.save("generated_image.png")
+  ```
+
+  ```python 多图参考 theme={null}
+  from google import genai
+  from google.genai import types
+  from PIL import Image
+
+  API_KEY = "<YOUR CAMELAI_API_KEY>"
+
+  prompt = "An office group photo of these people, they are making funny faces."
+  aspect_ratio = "5:4"
+  resolution = "2K"
+
+  client = genai.Client(
+      api_key=API_KEY,
+      http_options={"base_url": "https://camel.kr777.top/gemini"}
+  )
+
+  response = client.models.generate_content(
+      model="gemini-3-pro-image-preview",
+      contents=[
+          prompt,
+          Image.open('person1.png'),
+          Image.open('person2.png'),
+          Image.open('person3.png'),
+          Image.open('person4.png'),
+          Image.open('person5.png'),
+      ],
+      config=types.GenerateContentConfig(
+          response_modalities=['TEXT', 'IMAGE'],
+          image_config=types.ImageConfig(
+              aspect_ratio=aspect_ratio,
+              image_size=resolution,
+          ),
+      )
+  )
+
+  # 保存图片 & 输出文本
+  for part in response.parts:
+      if part.text is not None:
+          print(part.text)
+      elif image := part.as_image():
+          image.save("office.png")
+  ```
+
+  ```python Google Search theme={null}
+  from google import genai
+  from google.genai import types
+
+  API_KEY = "<YOUR CAMELAI API KEY>"
+
+  prompt = (
+      "Visualize the current weather forecast for the next 5 days in Shanghai "
+      "as a clean, modern weather chart. Add a visual on what I should wear each day."
+  ) # 将上海近五日天气以天气图表形式呈现出来
+
+  aspect_ratio = "16:9"
+
+  client = genai.Client(
+      api_key=API_KEY,
+      http_options={"base_url": "https://camel.kr777.top/gemini"}
+  )
+
+  response = client.models.generate_content(
+      model="gemini-3-pro-image-preview",
+      contents=prompt,
+      config=types.GenerateContentConfig(
+          response_modalities=['TEXT', 'IMAGE'],
+          image_config=types.ImageConfig(
+              aspect_ratio=aspect_ratio,
+          ),
+          tools=[{"google_search": {}}]
+      )
+  )
+
+  # 保存图片 & 输出文本
+  for part in response.parts:
+      if part.text is not None:
+          print(part.text)
+      elif image := part.as_image():
+          image.save("weather.png")
+  ```
+</CodeGroup>
+
+## Gemini 2.5 系列的「推理」说明
+
+1. 2.5 系列都是推理模型。
+2. 2.5 flash 是混合模型，类似 claude sonnet 3.7，可以通过用 `thinking_budget` 控制推理预算来达到最佳效果。
+3. 2.5 pro 是纯粹的推理模型，因此不能关闭 thinking、也不显式传递推理预算。
+4. 温度值支持范围 0 \<= `temprature` \<= 2
+
+**Python 调用参考如下：**
+
+<CodeGroup>
+  ```py 普通非流式 theme={null}
+  from google import genai
+  from google.genai import types
+
+  def generate():
+      client = genai.Client(
+          api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+          http_options={"base_url": "https://camel.kr777.top/gemini"},
+      )
+
+      model = "gemini-2.0-flash"
+      contents = [
+          types.Content(
+              role="user",
+              parts=[
+                  types.Part.from_text(text="""对于普通股票投资者：分析财报有用的话，还要运气做什么？"""),
+              ],
+          ),
+      ]
+
+      print(client.models.generate_content(
+          model=model,
+          contents=contents,
+      ))
+
+  if __name__ == "__main__":
+      generate()
+  ```
+
+  ```py 2.0 系列-流式 theme={null}
+  from google import genai
+  from google.genai import types
+
+  def generate():
+      client = genai.Client(
+          api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+          http_options={"base_url": "https://camel.kr777.top/gemini"},
+      )
+
+      model = "gemini-2.0-flash"
+      contents = [
+          types.Content(
+              role="user",
+              parts=[
+                  types.Part.from_text(text="""对于普通股票投资者：分析财报有用的话，还要运气做什么？"""),
+              ],
+          ),
+      ]
+      generate_content_config = types.GenerateContentConfig(
+          response_mime_type="text/plain",
+      )
+
+      for chunk in client.models.generate_content_stream(
+          model=model,
+          contents=contents,
+          config=generate_content_config,
+      ):
+          print(chunk.text, end="")
+
+  if __name__ == "__main__":
+      generate()
+  ```
+
+  ```py 2.5 Flash-流式 theme={null}
+  from google import genai
+  from google.genai import types
+
+  def generate():
+      client = genai.Client(
+          api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+          http_options={"base_url": "https://camel.kr777.top/gemini"},
+      )
+
+      model = "gemini-2.5-flash-preview-04-17" #gemini-2.5-pro-preview-03-25、gemini-2.5-flash-preview-04-17
+      contents = [
+          types.Content(
+              role="user",
+              parts=[
+                  types.Part.from_text(text="""对于普通股票投资者：分析财报有用的话，还要运气做什么？"""),
+              ],
+          ),
+      ]
+      generate_content_config = types.GenerateContentConfig(
+          thinking_config = types.ThinkingConfig(
+              thinking_budget=2048, #范围 0-16384。默认 1024，最佳边际效果 16000
+          ),
+          response_mime_type="text/plain",
+      )
+
+      for chunk in client.models.generate_content_stream(
+          model=model,
+          contents=contents,
+          config=generate_content_config,
+      ):
+          print(chunk.text, end="")
+
+  if __name__ == "__main__":
+      generate()
+  ```
+
+  ```py 2.5 Pro-流式 theme={null}
+  from google import genai
+  from google.genai import types
+
+  def generate():
+      client = genai.Client(
+          api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+          http_options={"base_url": "https://camel.kr777.top/gemini"},
+      )
+
+      model = "gemini-2.5-pro-preview-03-25"
+      contents = [
+          types.Content(
+              role="user",
+              parts=[
+                  types.Part.from_text(text="""怎么知道我不是在浪费时间"""),
+              ],
+          ),
+      ]
+      generate_content_config = types.GenerateContentConfig(
+          response_mime_type="text/plain",
+      )
+
+      for chunk in client.models.generate_content_stream(
+          model=model,
+          contents=contents,
+          config=generate_content_config,
+      ):
+          print(chunk.text, end="")
+
+  if __name__ == "__main__":
+      generate()
+  ```
+
+  ```py 显示推理内容 theme={null}
+  from google import genai
+  from google.genai import types
+
+  def generate():
+      client = genai.Client(
+          api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+          http_options={"base_url": "https://camel.kr777.top/gemini"},
+      )
+
+      model = "gemini-2.5-pro-preview-05-06"
+      contents = [
+          types.Content(
+              role="user",
+              parts=[
+                  types.Part.from_text(text="""金融领域的「72 法则」是如何推导的？"""),
+              ],
+          ),
+      ]
+      generate_content_config = types.GenerateContentConfig(
+          response_mime_type="text/plain",
+          thinking_config=types.ThinkingConfig(
+              include_thoughts=True  # 🧠 启用思考过程输出
+          ),
+      )
+
+      # 用于存储最后一个 chunk 的 usage_metadata
+      final_usage_metadata = None
+      
+      for chunk in client.models.generate_content_stream(
+          model=model,
+          contents=contents,
+          config=generate_content_config,
+      ):
+          # 检查是否有内容部分
+          if chunk.candidates and len(chunk.candidates) > 0:
+              for part in chunk.candidates[0].content.parts:
+                  if part.text:
+                      if part.thought:
+                          # 思考过程内容
+                          print(part.text, end="")
+                      else:
+                          # 最终答案内容
+                          print(part.text, end="")
+          
+          # 保存最新的 usage_metadata，只有最后一个 chunk 会包含完整信息
+          if chunk.usage_metadata:
+              final_usage_metadata = chunk.usage_metadata
+      
+      # 在所有 chunk 处理完后，打印完整的 token 使用情况
+      if final_usage_metadata:
+          print(f"\n\n📊 Token 使用情况:")
+          print(f"思考 tokens: {getattr(final_usage_metadata, 'thoughts_token_count', '不可用')}")
+          print(f"输出 tokens: {getattr(final_usage_metadata, 'candidates_token_count', '不可用')}")
+          print(f"总计: {final_usage_metadata}")
+
+  if __name__ == "__main__":
+      generate()
+  ```
+</CodeGroup>
+
+## Gemini 2.5 Flash 支持
+
+Openai 兼容方式调用参考如下：
+
+<CodeGroup>
+  ```py Python 用于快速任务时，关闭思考 theme={null}
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
+      base_url="https://api.kr777.top",
+  )
+
+  completion = client.chat.completions.create(
+      model="gemini-2.5-flash-preview-04-17-nothink",
+      messages=[
+          {
+              "role": "user",
+              "content": "Explain the Occam's Razor concept and provide everyday examples of it"
+          }
+      ]
+  )
+
+  print(completion.choices[0].message.content)
+  ```
+
+  ```py Python 控制预算 theme={null}
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
+      base_url="https://api.kr777.top",
+  )
+
+  completion = client.chat.completions.create(
+      model="gemini-2.5-flash-preview-04-17",
+      reasoning_effort="low", # 可选 "low", "medium" 和 "high", 分别对应 1024, 8192 和 16384 推理预算
+      messages=[
+          {
+              "role": "user",
+              "content": "Explain the Occam's Razor concept and provide everyday examples of it"
+          }
+      ]
+  )
+
+  print(completion.choices[0].message.content)
+  ```
+
+  ```shell Curl-基础调用 theme={null}
+  curl -X POST https://api.kr777.top/chat/completions \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer sk-***" \
+    -d '{
+      "model": "gemini-2.5-flash-preview-04-17-nothink",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Explain the Occam'\''s Razor concept and provide an everyday example of it."
+        }
+      ]
+    }'
+  ```
+
+  ```shell Curl-Thinking 显示 theme={null}
+  curl https://api.kr777.top/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-***" \
+  -d '{
+    "model": "gemini-2.5-pro-preview-05-06",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain the Occam'\''s Razor concept and provide an everyday example of it."
+      }
+    ],
+    "reasoning_effort": "low"
+  }'
+  ```
+</CodeGroup>
+
+<Tip>
+  1. 用于复杂任务时，只需要将模型 id 设置为默认开启思考的 `gemini-2.5-flash-preview-04-17` 即可。
+  2. Gemini 2.5 Flash 通过 `budget`（思考预算）来控制思考的深度，范围 0-16K，目前转发采用的是默认预算 1024，最佳边际效果为 16K。
+</Tip>
+
+## 多媒体文件
+
+* 对于 **20MB** 以下的多媒体文件（图片、音频、视频），用 `inline_data` 上传。
+* 当多媒体文件大于 20M 时，需要用 Files API。
+
+### 20M 以下文件
+
+<Tip>
+  你可以增加 `EDIARESOLUTION_MEDIUM` 参数来约束图片的精度，从而大幅节省输入的费用以及减少大图报错的可能性。
+
+  **支持的媒体分辨率参数值:**
+
+  | 参数名                            | 备注                                               |
+  | ------------------------------ | ------------------------------------------------ |
+  | MEDIA\_RESOLUTION\_UNSPECIFIED | 媒体分辨率未指定                                         |
+  | MEDIA\_RESOLUTION\_LOW         | 媒体分辨率设为 low (64 tokens).                         |
+  | MEDIA\_RESOLUTION\_MEDIUM      | 媒体分辨率设为 medium (256 tokens).                     |
+  | MEDIA\_RESOLUTION\_HIGH        | 媒体分辨率设为 high (zoomed reframing with 256 tokens). |
+</Tip>
+
+**调用参考：**
+
+<CodeGroup>
+  ```py 图片 theme={null}
+  from google import genai
+  from google.genai import types
+
+  # 读取文件为二进制数据
+  file_path = "yourpath/file.jpeg"
+  with open(file_path, "rb") as f:
+      file_bytes = f.read()
+
+  client = genai.Client(
+      api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+      http_options={"base_url": "https://camel.kr777.top/gemini"}
+  )
+
+  response = client.models.generate_content(
+      model="gemini-2.5-flash",
+      contents=types.Content(
+          parts=[
+              types.Part(
+                  inline_data=types.Blob(
+                      data=file_bytes,
+                      mime_type="image/jpeg"
+                  )
+              ),
+              types.Part(
+                  text="Describe the image."
+              )
+          ]
+      ),
+      config=types.GenerateContentConfig(
+          system_instruction="You are a helpful assistant that can describe images.",
+          max_output_tokens=768,
+          temperature=0.1,
+          thinking_config=types.ThinkingConfig(
+              thinking_budget=0, include_thoughts=False
+          ),
+          media_resolution=types.MediaResolution.MEDIA_RESOLUTION_MEDIUM # 256 tokens
+      )
+  )
+
+  print(response.text)
+  print(response.usage_metadata) # 输出 token 花费细节
+  ```
+
+  ```py 音频 theme={null}
+  from google import genai
+  from google.genai import types
+
+  # 读取文件为二进制数据
+  file_path = "yourpath/file.m4a"
+  with open(file_path, "rb") as f:
+      file_bytes = f.read()
+
+  client = genai.Client(
+      api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+      http_options={"base_url": "https://camel.kr777.top/gemini"}
+  )
+
+  response = client.models.generate_content(
+      model="gemini-2.0-flash",
+      contents=types.Content(
+          parts=[
+              types.Part(
+                  inline_data=types.Blob(
+                      data=file_bytes,
+                      mime_type="audio/m4a"
+                  )
+              ),
+              types.Part(
+                  text="Transcribe the audio to text."
+              )
+          ]
+      )
+  )
+
+  print(response.text)
+  ```
+
+  ```py 视频 theme={null}
+  from google import genai
+  from google.genai import types
+
+  # 读取文件为二进制数据
+  file_path = "yourpath/file.mp4"
+  with open(file_path, "rb") as f:
+      file_bytes = f.read()
+
+  client = genai.Client(
+      api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+      http_options={"base_url": "https://camel.kr777.top/gemini"}
+  )
+
+  response = client.models.generate_content(
+      model="gemini-2.0-flash",
+      contents=types.Content(
+          parts=[
+              types.Part(
+                  inline_data=types.Blob(
+                      data=file_bytes,
+                      mime_type="video/mp4"
+                  )
+              ),
+              types.Part(
+                  text="Summarize this video. Then create a quiz with an answer key based on the information in this video."
+              )
+          ]
+      )
+  )
+
+  print(response.text)
+  ```
+
+  ```py Youtube 链接 theme={null}
+  from google import genai
+  from google.genai import types
+
+  client = genai.Client(
+      api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+      http_options={"base_url": "https://camel.kr777.top/gemini"}
+  )
+
+  response = client.models.generate_content(
+      model="gemini-2.0-flash",
+      contents=types.Content(
+          parts=[
+              types.Part(
+                  file_data=types.FileData(
+                      file_uri="https://www.youtube.com/watch?v=OoU7PwNyYUw"
+                  )
+              ),
+              types.Part(
+                  text="Please summarize the video in 3 sentences."
+              )
+          ]
+      )
+  )
+
+  print(response.text)
+  ```
+</CodeGroup>
+
+### Files API
+
+Gemini 可以同时处理各种类型的输入数据，包括文本、图片和音频。当总请求大小（包括文件、文本提示、系统指令等）超过 **20 MB** 时，请务必使用 Files API。
+
+<Tip>
+  * 不支持列出已上传的文件
+  * 文件会在 48 小时后自动删除，也可以手动删除已上传的文件
+</Tip>
+
+**调用参考**
+
+<CodeGroup>
+  ```python 上传文件 theme={null}
+  from google import genai
+
+  client = genai.Client(
+      api_key="sk-****",   
+      http_options={"base_url": "https://camel.kr777.top/gemini"},
+  )
+
+  myfile = client.files.upload(file="path/to/sample.mp3")
+
+  response = client.models.generate_content(
+      model="gemini-2.5-flash", contents=["Describe this audio clip", myfile]
+  )
+
+  print(response.text)
+  ```
+
+  ```python 获取文件的元数据 theme={null}
+  from google import genai
+
+  client = genai.Client(
+      api_key="sk-****",   
+      http_options={"base_url": "https://camel.kr777.top/gemini"},
+  )
+
+  myfile = client.files.upload(file='path/to/sample.mp3')
+  file_name = myfile.name
+  myfile = client.files.get(name=file_name)
+  print(myfile)
+  ```
+
+  ```python 删除已上传的文件 theme={null}
+  from google import genai
+
+  client = genai.Client()
+
+  myfile = client.files.upload(file='path/to/sample.mp3')
+  client.files.delete(name=myfile.name)
+  ```
+</CodeGroup>
+
+## Code Execution
+
+自动代码解析器用例参考：
+
+```py Python theme={null}
+from google import genai
+from google.genai import types
+
+# 读取文件为二进制数据
+file_path = "yourpath/file.csv"
+with open(file_path, "rb") as f:
+    file_bytes = f.read()
+
+client = genai.Client(
+    api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+    http_options={"base_url": "https://camel.kr777.top/gemini"}
+)
+
+response = client.models.generate_content(
+    model="gemini-2.0-flash",
+    contents=types.Content(
+        parts=[
+            types.Part(
+                inline_data=types.Blob(
+                    data=file_bytes,
+                    mime_type="text/csv"
+                )
+            ),
+            types.Part(
+                text="Please analyze this CSV and summarize the key statistics. Use code execution if needed."
+            )
+        ]
+    ),
+    config=types.GenerateContentConfig(
+        tools=[types.Tool(
+            code_execution=types.ToolCodeExecution
+        )]
+    )
+)
+
+for part in response.candidates[0].content.parts:
+    if part.text is not None:
+        print(part.text)
+    if getattr(part, "executable_code", None) is not None:
+        print("Generated code:\n", part.executable_code.code)
+    if getattr(part, "code_execution_result", None) is not None:
+        print("Execution result:\n", part.code_execution_result.output)
+```
+
+## 上下文缓存
+
+Gemini 在原生 API 下默认启用了**隐式上下文缓存**，无需开发者手动操作。每一次 `generate_content` 请求，系统会自动为输入内容建立缓存。当后续请求与此前内容完全一致时，将直接命中缓存，返回上一次的推理结果，大幅提升响应速度并有机会节省 token 消耗。
+
+* **缓存自动生效，无需手动配置。**
+* 缓存仅在内容、模型、参数完全一致时生效；任何字段不同都会视为新请求，不命中缓存。
+* 缓存有效期（TTL）由开发者设定，也可以不设置。如果未指定，默认为 1 小时。无最小或最大时长限制，费用取决于缓存 token 数与缓存时间。
+  * 虽然 Google 官方对 TTL 不设上下限，但由于我们作为转发平台，**仅支持有限的 TTL 配置范围，不保证永久有效**。
+
+### 注意事项
+
+* **无成本节省保证**：缓存 token 的计费为输入原价的 25%，理论上输入部分可最多节省 75% 成本，[**但 Google 官方并未承诺必然节省**](https://ai.google.dev/gemini-api/docs/caching?lang=python)，实际账单还需结合缓存命中率、token 类型与存储时长共同评估。
+* **缓存命中条件**：建议将重复的上下文放在请求前部，将易变内容（如用户输入）置于后部，以提高缓存命中率。
+* **缓存命中反馈**：如果响应结果命中缓存，在 `response.usage_metadata` 中会包含 `cache_tokens_details` 字段，并有 `cached_content_token_count`，开发者可以据此判断本次请求是否命中缓存。\
+  示例响应字段（命中缓存时）：
+
+  ```
+  cache_tokens_details=[ModalityTokenCount(modality=<MediaModality.TEXT: 'TEXT'>, token_count=2003)]
+  cached_content_token_count=2003
+  ```
+
+**代码示例：**
+
+```python  theme={null}
+from google import genai
+
+client = genai.Client(
+    http_options={"base_url": "https://camel.kr777.top/gemini"},
+    api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
+)
+
+prompt = """
+《三国演义》词曰：打开字典    滚滚长江东逝水，浪花淘尽英雄。是非成败转头空：青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢：古今多少事，都付笑谈中。2 打开字典  宴桃园豪... : 话说天下大势，分久必合，合久必分：周末七国分争，并入于秦。及秦灭之后，楚、汉分争，又并入于汉。汉朝自高祖斩白蛇而起义，一统天下。后来光武中兴，传至献帝，遂分为三国。推其致乱之由，殆始于桓、灵二帝。桓帝禁锢善类，崇 信宦官。及桓帝崩，灵帝即位，大将军窦武、太傅陈蕃，共相辅佐。时有宦官曹节等弄权，窦武、陈蕃谋诛之，作事不密，反为所害。中涓自此愈横。3 打开字典  宴桃园豪... : 建宁二年四月望日，帝御温德殿。方升座，殿角狂风骤起，只 见一条大青蛇，从梁上飞将下来，蟠于椅上。帝惊倒，左右急救入宫，百官俱奔避。须臾，蛇不见了。忽然大雷大雨，加以冰雹，落到半夜方止，坏却房屋无数。建宁四年二月，洛阳地震；又海水泛溢，沿海居民，尽被大浪卷入海中。光和元 年，雌鸡化雄。六月朔，黑气十馀丈，飞入温德殿中。秋七月，有虹见于玉堂；五原山岸，尽皆崩裂。种种不祥，非止一端。4 打开字典  宴桃园豪... : 帝下诏问群臣以灾异之由，议郎蔡邕上疏，以为霓堕鸡化，乃妇寺干政之所致，言颇切 直。帝览奏叹息，因起更衣。曹节在后窃视，悉宣告左右·遂以他事陷邕于罪，放归田里。后张让，赵忠，封諝，段圭，曹节，候览，蹇硕，程旷，夏恽，郭胜十人朋比为奸，号为“十常侍”。帝尊信张让，呼为“阿父”，朝政日非，以致天下人心思乱，盗贼蜂起。5 打开字典  宴桃园豪... : 时钜鹿郡有兄弟三人：一名张角，一名张宝，一名张梁。那张角本是个不第秀才。因入山采药，遇一老人，碧眼童颜，手执藜杖，唤角至一洞中，以天书三卷授之，曰：“此名太平要术。汝得之，当代天宣化，普救世人；若萌异心，必获恶报。”角拜问姓名。老人曰：“吾乃南华老仙也。”言讫，化阵清风而去。6 打开字典  宴桃园豪... : 角得此书，晓夜攻习，能呼风唤雨，号为太平道人。中平元年正月内，疫气流行，张角散施符水，为人治病，自称大贤良师。角有徒弟五百馀人，云游四方，皆能书符念咒。次后徒众日多，角乃立三十六方，─大方万馀人，小方六七千─，各立渠帅，称为将军。讹言“苍天已死，黄天当立。”又云“岁在甲子，天下大吉。”令人各以白土，书“甲子”二字于家中大门上。青、幽、徐、冀、荆、扬、兖、豫八州之人，家家侍奉大贤良师张角名字。角遣其党马元义，暗赍金帛，结交中涓封諝，以为内应。角与二弟商议曰：“至难得者，民心也。今民心已顺，若不乘势取天下，诚为可惜。”遂一面私造黄旗，约期举事；一面使弟子唐州，驰书报封諝。唐州乃迳赴省中告变。帝召大将军何进调兵擒马元义，斩之；次收封諝等一干人下狱。7 打开字典  宴桃园豪... : 张角闻知事露，星夜举兵，自称天公将军，─张宝称地公将军，张梁称人公将军─。申言于众曰：“今汉运将终，大圣人出；汝等皆宜顺从天意，以桨太平。”四方百姓，裹黄巾从张角反者，四五十万。贼势浩大，官军望风而靡。何进奏帝火速降诏，令各处备御，讨贼立功；一面遣中郎将卢植，皇甫嵩，朱隽，各引精兵，分三路讨之。8 打开字典  宴桃园豪... : 且说张角一军，前犯幽州界分。幽州太守刘焉，乃江夏竟陵人氏，汉鲁恭王之后也；当时闻得贼兵将至，召校尉邹靖计议。靖曰：“贼兵众，我兵寡，明公宜作速招军应敌。”刘焉然其说，随 即出榜招募义兵。榜文行到涿县，乃引出涿县中一个英雄。9 打开字典  宴桃园豪... : 那人不甚好读书；性宽和，寡言语，喜怒不形于色；素有大志，专好结交天下豪杰；生得身长七尺五寸，两耳垂肩，双手过膝，目能自顾其耳，面如冠玉，唇若涂脂；中山靖王刘胜之后，汉景帝阁下玄孙；姓刘，名备，字玄德。昔刘胜之子刘贞，汉武时封涿鹿亭侯，后坐酬金失侯，因此遗这一枝在涿县。玄德祖刘雄，父刘弘。弘曾举孝廉，亦尝作吏，早丧。玄德幼孤，事母至孝；家贫，贩屦 织席为业。家住本县楼桑村。其家之东南，有一大桑树，高五丈馀，遥望之，童童如车盖。相者云：“此家必出贵人。”10 打开字典 宴桃园豪... : 玄德幼时，与乡中小儿戏于树下，曰：“我为天子，当乘此车盖。”叔父刘元起奇其言，曰：“此儿非常人也！”因见玄德家贫，常资给之。年十五岁，母使游学，尝师事郑玄、卢植；与公孙瓒等为友。及刘焉发榜招军时，玄德年己二十八岁矣。当日见了榜文，慨然长叹。随后一人厉声言曰：“大丈夫不与国家出力，何故长叹？”11 打开字 典 宴桃园豪... : 玄德回视其人：身长八尺，豹头环眼，燕颔虎须，声若巨雷，势如奔马。玄德见他形貌异常，问其姓名。其人曰：“某姓张，名飞，字翼德。世居涿郡，颇有庄田，卖酒屠猪，专好结交天下豪杰。适才见公看榜而叹，故此相 问。”玄德曰：“我本汉室宗亲，姓刘，名备。今闻黄巾倡乱，有志欲破贼安民；恨力不能，故长叹耳。”飞曰：“吾颇有资财，当招募乡勇，与公同举大事，如何？”玄德甚喜，遂与同入村店中饮酒。12 打开字典 宴桃园豪... : 正饮间，见一大汉，推著一辆车子，到店门首歇了；入店坐下，便唤酒保：“快斟酒来吃，我待赶入城去投军。”玄德看其人：身长九尺，髯长二尺：面如重枣，唇若涂脂；丹凤眼，卧蚕眉：相貌堂堂，威风凛凛。玄德就邀他同坐，叩其姓名。其人曰：“吾姓关，名羽，字寿长，后改云长，河东解良人也。因本处势豪，倚势凌人，被吾杀了；逃难江湖，五六年矣。今闻此处招军破贼，特来应募。”玄德遂以己志告之。云长大喜。同到张飞庄上，共议大事。13 打开字典相关讨论 宴桃园豪... : 飞曰：“吾庄后有一桃园，花开正盛；明日当于园中祭告天地，我三人结为兄弟，协力同心，然后可图大事。”玄德、云长、齐声应曰：“如此甚好。”次日，于桃园中，备下乌牛白马祭礼等项，三人焚香，再拜而说誓曰：“念刘备、关羽、张飞，虽然异姓，既结为兄弟，则同心协力，救困扶危；上报国家，下安黎庶；不求同年同月同日生，但愿同年同月同日死。皇天后土，实鉴此心。背义忘恩，天人共戮。”誓毕，拜玄德为兄，关羽次之，张飞为弟。祭罢天地，复宰牛设酒，聚乡中勇士，得三百馀人，就桃园中痛饮一醉。来日收拾军器，但恨无马匹可乘。14 打开字典 宴桃园豪... : 正思虑间，人报“有两个客人，引一夥伴当，赶一群马，投庄上来。”玄德曰：“此天佑我也！”三人出庄迎接。原来二客乃中山大商：一名张世平，一名苏双，每年往北贩马，近因寇发而回。玄德请二人到庄，置酒管待，诉说欲讨贼安民之意。二客大喜，愿将良马五十匹相送；又赠金银五百两，镔铁一千斤，以资器用。玄德谢别二客，便命良匠打造双股剑。云长造青龙偃月刀，又名冷艳 锯，重八十二斤。张飞造丈八点钢矛。各置全身铠甲。共聚乡勇五百馀人，来见邹靖。邹靖引见太守刘焉。三人参见毕，各通姓名。玄德说起宗派，刘焉大喜，遂认玄德为侄。
+"""
+
+def generate_content_sync():
+    response = client.models.generate_content(
+        model="gemini-2.5-flash-preview-05-20",
+        contents=prompt + "三国演义这一回出现了几个任务 ",
+    )
+    print(response.usage_metadata)  # 命中缓存时会显示 cache_tokens_details 和 cached_content_token_count 字段
+    return response
+
+generate_content_sync()
+```
+
+> 命中缓存时，`response.usage_metadata` 会包含如下结构：
+>
+> ```
+> cache_tokens_details=[ModalityTokenCount(modality=<MediaModality.TEXT: 'TEXT'>, token_count=2003)]
+> cached_content_token_count=2003
+> ```
+
+**核心结论**：隐式缓存支持自动命中与命中反馈。开发者可以通过 usage\_metadata 判断命中情况。成本节省非保证，实际效果因请求结构和使用场景而异。
+
+## Function calling
+
+使用 openai 兼容方式调用 Gemini 的 function calling 功能时，需要在请求体内部传入`tool_choice="auto"`，否则会报错。
+
+<CodeGroup>
+  ```py Python theme={null}
+  from openai import OpenAI
+
+  # Define the function declaration for the model
+  schedule_meeting_function = {
+      "name": "schedule_meeting",
+      "description": "Schedules a meeting with specified attendees at a given time and date.",
+      "parameters": {
+          "type": "object",
+          "properties": {
+              "attendees": {
+                  "type": "array",
+                  "items": {"type": "string"},
+                  "description": "List of people attending the meeting.",
+              },
+              "date": {
+                  "type": "string",
+                  "description": "Date of the meeting (e.g., '2024-07-29')",
+              },
+              "time": {
+                  "type": "string",
+                  "description": "Time of the meeting (e.g., '15:00')",
+              },
+              "topic": {
+                  "type": "string",
+                  "description": "The subject or topic of the meeting.",
+              },
+          },
+          "required": ["attendees", "date", "time", "topic"],
+      },
+  }
+
+  # Configure the client
+  client = OpenAI(
+      api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
+      base_url="https://api.kr777.top",
+  )
+
+  # Send request with function declarations using OpenAI compatible format
+  response = client.chat.completions.create(
+      model="gemini-2.0-flash",
+      messages=[
+          {"role": "user", "content": "Schedule a meeting with Bob and Alice for 03/14/2025 at 10:00 AM about the Q3 planning."}
+      ],
+      tools=[{"type": "function", "function": schedule_meeting_function}],
+      tool_choice="auto" ## 📍 此处追加了 CaMeL AI 兼容，更稳定的请求方式
+  )
+
+  # Check for a function call
+  if response.choices[0].message.tool_calls:
+      tool_call = response.choices[0].message.tool_calls[0]
+      function_call = tool_call.function
+      print(f"Function to call: {function_call.name}")
+      print(f"Arguments: {function_call.arguments}")
+      print(response.usage)
+      #  In a real app, you would call your function here:
+      #  result = schedule_meeting(**json.loads(function_call.arguments))
+  else:
+      print("No function call found in the response.")
+      print(response.choices[0].message.content)
+  ```
+</CodeGroup>
+
+**输出结果示例：**
+
+```bash  theme={null}
+Function to call: schedule_meeting
+Arguments: {"attendees":["Bob","Alice"],"date":"2025-03-14","time":"10:00","topic":"Q3 planning"}
+CompletionUsage(completion_tokens=28, prompt_tokens=111, total_tokens=139, completion_tokens_details=None, prompt_tokens_details=None)
+```
+
+## Tokens 用量追踪
+
+1. Gemini 原生采用 `usage_metadata` 来[追踪使用的 token](https://ai.google.dev/gemini-api/docs/tokens?lang=python)，其中的字段对应如下：
+
+* prompt\_token\_count: 输入 token 数
+* candidates\_token\_count: 输出 token 数
+* thoughts\_token\_count: 推理使用的 token 数，性质上也是输出 token
+* total\_token\_count: 总 token 使用量（输入+输出）
+
+2. 对于 OpenAI 兼容格式，则采用 `.usage` 来追踪，字段对应如下：
+
+* usage.completion\_tokens: 输入 token 数
+* usage.prompt\_tokens: 输出 token 数（包含推理使用的 token 数）
+* usage.total\_tokens:总 token 使用量
+
+**使用方法如下:**
+
+<CodeGroup>
+  ```py Gemini 原生 theme={null}
+  from google import genai
+  from google.genai import types
+  import time
+
+  def generate():
+      client = genai.Client(
+          api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
+          http_options={"base_url": "https://camel.kr777.top/gemini"},
+      )
+
+      model = "gemini-2.5-pro-preview-03-25"
+      contents = [
+          types.Content(
+              role="user",
+              parts=[
+                  types.Part.from_text(text="""金融领域的「72 法则」是如何推导的？"""),
+              ],
+          ),
+      ]
+      generate_content_config = types.GenerateContentConfig(
+          response_mime_type="text/plain",
+      )
+
+      final_usage_metadata = None
+      
+      for chunk in client.models.generate_content_stream(
+          model=model,
+          contents=contents,
+          config=generate_content_config,
+      ):
+          print(chunk.text, end="")
+          if chunk.usage_metadata:
+              final_usage_metadata = chunk.usage_metadata
+      
+      # 在所有 chunk 处理完后，打印完整的 token 使用情况
+      if final_usage_metadata:
+          print(f"\nUsage: {final_usage_metadata}")
+
+  if __name__ == "__main__":
+      generate()
+  ```
+
+  ```py OpenAI 兼容 theme={null}
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="sk-***", # 换成你在 CaMeL AI 生成的密钥
+      base_url="https://api.kr777.top",
+  )
+
+  completion = client.chat.completions.create(
+      model="gemini-2.5-flash-preview-04-17",
+      reasoning_effort="low", #"low", "medium", and "high", which behind the scenes we map to 1K, 8K, and 24K thinking token budgets. If you want to disable thinking, you can set the reasoning effort to "none".
+      messages=[
+          {
+              "role": "user",
+              "content": "金融领域的「72 法则」是如何推导的？"
+          }
+      ],
+      stream=True
+  )
+
+  #print(completion.choices[0].message.content)
+
+  for chunk in completion:
+      print(chunk.choices[0].delta)
+      # 只在最后一个 chunk（包含完整 usage 数据）时打印 usage 信息
+      if chunk.usage and chunk.usage.completion_tokens > 0:
+          print(f"输出 tokens: {chunk.usage.completion_tokens}")
+          print(f"输入 tokens: {chunk.usage.prompt_tokens}")
+          print(f"总 tokens: {chunk.usage.total_tokens}")
+  ```
+</CodeGroup>

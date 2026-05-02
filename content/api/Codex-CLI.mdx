@@ -1,0 +1,139 @@
+---
+title: "OpenAI Codex"
+description: "通过 CaMeL AI API 使用 Codex"
+---
+
+> 通过 CaMeL AI API 使用 Codex
+
+## 安装
+
+### 官网下载（macOS 版本）
+
+[https://openai.com/zh-Hans-CN/codex/](https://openai.com/zh-Hans-CN/codex/)
+
+### 使用命令行安装
+
+```bash  theme={null}
+npm install -g @openai/codex
+```
+
+## **环境变量配置**
+
+### 使用配置文件配置
+
+1. 修改 ` ~/.codex/config.toml` 配置文件，增加如下配置：
+
+```toml  theme={null}
+profile = "camelai"
+
+[model_providers.camelai]
+name = "camelai"
+base_url = "https://api.kr777.top"
+personality = "pragmatic"
+wire_api = "responses"
+
+[profiles.camelai]
+model = "gpt-5.2"
+model_provider = "camelai"
+model_reasoning_effort = "high"
+```
+
+2. 修改 ` ~/.codex/auth.json` 配置文件，修改如下配置：
+
+```json  theme={null}
+{
+  "OPENAI_API_KEY": "CAMELAI_API_KEY"
+}
+```
+
+### 通过 cc-switch 配置
+
+1. 运行 CC-Switch，添加供应商。
+
+<img src="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-1.png?fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=fe138eaf69337380daafce928076cf45" alt="Codex 1" data-og-width="2072" width="2072" data-og-height="1374" height="1374" data-path="public/codex-1.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-1.png?w=280&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=0311ea7ed1540310529bbc7305ec7342 280w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-1.png?w=560&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=2f5c780e3d1b935188178182befb682e 560w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-1.png?w=840&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=064f5aa9012531e7fb3d52f93327f79b 840w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-1.png?w=1100&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=2de92ab2071dc61caee658d312926a0a 1100w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-1.png?w=1650&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=121a5b386cf5e8e1555b739c91692c73 1650w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-1.png?w=2500&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=989dc29d243e7e13652a4ba2e0eccb77 2500w" />
+
+2. 在预设列表中选择「CaMeL AI」。
+
+<img src="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-2.png?fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=b8ba865c78af5753e54cccd93f8ad7da" alt="Codex 2" data-og-width="2072" width="2072" data-og-height="1374" height="1374" data-path="public/codex-2.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-2.png?w=280&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=85bf24d7d8244d7ab347645ca5e4ad9a 280w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-2.png?w=560&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=a6be53ea4f0a2ef7b2182095503934c0 560w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-2.png?w=840&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=7e0469421fba3f48027a0d22979e043f 840w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-2.png?w=1100&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=bdd77fa84fdb88ccd6b1eb5b9fb9862a 1100w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-2.png?w=1650&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=b30a51ad9a3b8a6bf752a23613cad71b 1650w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-2.png?w=2500&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=9ef4bbdb07061aa63942cfa2aa969b20 2500w" />
+
+3. 在「API Key」栏中填写你的密钥并点击「添加」保存设置。
+
+<img src="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-3.png?fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=8bfb58110be1913a35c04b4e24f618c1" alt="Codex 3" data-og-width="2072" width="2072" data-og-height="1374" height="1374" data-path="public/codex-3.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-3.png?w=280&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=a913320a9448536ed04fdcdcbb0a7880 280w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-3.png?w=560&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=f8520abd4157b2b39abf9cfd9cbf8739 560w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-3.png?w=840&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=657f95b9f411fcbf39ab53294038ad3c 840w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-3.png?w=1100&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=75e4c426a22d29aad830892679700a8f 1100w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-3.png?w=1650&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=6db27994805948ef75734e0de9343611 1650w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-3.png?w=2500&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=bd1b78b3dba5c39a55045725e381a7d7 2500w" />
+
+4. 返回首页，在供应商列表中选择「CaMeL AI」，点击「启用」即可使用。
+
+<img src="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-4.png?fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=58abd6f4edd56d892624269ff54f6079" alt="Codex 4" data-og-width="2072" width="2072" data-og-height="1374" height="1374" data-path="public/codex-4.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-4.png?w=280&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=6286805e26d52b4dd18035ff749844b2 280w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-4.png?w=560&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=4521214c72eb33e3e72ef938dcdba6c3 560w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-4.png?w=840&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=dde26ad95f9e9f4e4fc2c177549f80a2 840w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-4.png?w=1100&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=f1aa9d9eff8a99dc698327c50ffcd182 1100w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-4.png?w=1650&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=0a6852ddce4f13b128bf993aa6f98b3c 1650w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-4.png?w=2500&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=2ee53a3c6437aa00350a8f900dfa5aed 2500w" />
+
+## 使用 Codex
+
+### 在终端中使用
+
+1. 打开终端，定位到你的项目目录，然后运行 `codex` 命令。
+
+```bash  theme={null}
+cd /你的项目路径
+codex
+```
+
+2. 根据需求，设置权限。
+
+<img src="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-5.png?fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=ae7c5f193d3aa5c8723c879840732d78" alt="Codex 5" data-og-width="1212" width="1212" data-og-height="814" height="814" data-path="public/codex-5.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-5.png?w=280&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=519b800ebd3230730b0bf647b6d1c31c 280w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-5.png?w=560&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=cf42091e06db96403cc155332d5ed98b 560w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-5.png?w=840&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=8da1f03a70d10b160bb8afb618b04f6e 840w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-5.png?w=1100&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=67127b75867d7dd319a50ab1b6732fc8 1100w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-5.png?w=1650&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=ae26b8885a80415ae50bdaa98de8380f 1650w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-5.png?w=2500&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=781d17ea160930a406951d315830870c 2500w" />
+
+3. 根据需求，选择需要使用的模型。
+
+<img src="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-6.png?fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=f942ebc707063463a3961347f8379553" alt="Codex 6" data-og-width="1212" width="1212" data-og-height="814" height="814" data-path="public/codex-6.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-6.png?w=280&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=f192b52375c4b3de1ef339a7891f167f 280w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-6.png?w=560&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=120f32fbb5a33f215d5dabdb6aea89be 560w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-6.png?w=840&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=ff69821611cc11fc0aef055d792e7e33 840w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-6.png?w=1100&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=212119f41bcbde319fc05fdc4ddf4d8e 1100w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-6.png?w=1650&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=13d821efcc932dfcc3ace96ad42e4d62 1650w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-6.png?w=2500&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=17fc5435e51b46f636086f0a0dc5ff9e 2500w" />
+
+4. 输入自然语言，若正常响应，则配置成功。
+
+<img src="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-8.png?fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=bf06aaa8c86834b20e5fef26fba84d50" alt="Codex 8" data-og-width="1212" width="1212" data-og-height="814" height="814" data-path="public/codex-8.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-8.png?w=280&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=2ffa6ff5d6351c3aafcdc20990c6f81f 280w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-8.png?w=560&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=a4ed81267459cd618d5d220f8dc06c1c 560w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-8.png?w=840&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=f896a5c4ce8169223ba47088fa5bf52a 840w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-8.png?w=1100&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=aaf318fdffd2d3a4920115593bc392c7 1100w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-8.png?w=1650&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=b16b008dd99883682e228496ced38af7 1650w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-8.png?w=2500&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=31a94c35ef6766be960078c9896d9b8e 2500w" />
+
+### 在 Codex 桌面端使用
+
+1. 打开 Codex 桌面端，选择工作目录。
+2. 在输入框输入任务，若正常响应，则配置成功。
+
+<img src="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-9.png?fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=673289a767cd354a686d1e547a364e0d" alt="Codex 9" data-og-width="2632" width="2632" data-og-height="1712" height="1712" data-path="public/codex-9.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-9.png?w=280&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=526c2fdbbff5fe4fbfa0f651fab1b485 280w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-9.png?w=560&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=b2c3e813252c63c98bda5e229f8c0c5f 560w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-9.png?w=840&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=719ade63c7a5a466572deb1dfdc035e1 840w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-9.png?w=1100&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=e301bae711c634d234502f9902e1857c 1100w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-9.png?w=1650&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=7dfdf735c2fb068f8afd1d124c6891c2 1650w, https://mintcdn.com/aihubmix/7hQ6_nS3fMExXVXm/public/codex-9.png?w=2500&fit=max&auto=format&n=7hQ6_nS3fMExXVXm&q=85&s=92a83338056052833f26c6f562390539 2500w" />
+
+## 实用命令参考
+
+### 帮助命令
+
+```bash  theme={null}
+codex -h
+```
+
+### 完整命令选项
+
+```bash  theme={null}
+Usage
+  $ codex [options] <prompt>
+
+Options
+  -h, --help                 显示帮助信息并退出
+  -m, --model <model>        指定使用的模型 (默认: codex-mini-latest)
+  -i, --image <path>         包含图像输入的文件路径
+  -v, --view <rollout>       查看之前保存的会话记录
+  -q, --quiet                非交互模式，仅打印助手的最终输出
+  -a, --approval-mode <mode> 覆盖审批策略: 'suggest', 'auto-edit', 或 'full-auto'
+
+  --auto-edit                自动批准文件编辑；仍会提示确认命令
+  --full-auto                自动批准沙箱环境中的编辑和命令
+
+  --no-project-doc           不自动包含仓库中的 'codex.md' 文件
+  --project-doc <file>       包含指定的 Markdown 文件作为上下文
+  --full-stdout              不截断命令输出的 stdout/stderr
+
+危险选项
+  --dangerously-auto-approve-everything
+                             跳过所有确认提示并直接执行命令（无沙箱保护）
+                             仅用于临时本地测试环境
+
+实验性选项
+  -f, --full-context         以"完整上下文"模式启动，将整个仓库加载到上下文中
+                             并在一次操作中应用批量编辑
+                             仅兼容 --model 参数
+
+示例
+  $ codex "编写并运行一个打印 ASCII 艺术的 Python 程序"
+  $ codex -q "修复构建问题"
+```

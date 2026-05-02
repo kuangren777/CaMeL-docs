@@ -1,0 +1,156 @@
+---
+title: "OpenCode"
+description: "OpenCode已正式集成 CaMeL AI 作为新的模型供应商，用户可直接使用 CaMeL AI 的API Key在OpenCode中调用其模型服务。"
+---
+
+> OpenCode已正式集成 CaMeL AI 作为新的模型供应商，用户可直接使用 CaMeL AI 的API Key在OpenCode中调用其模型服务。
+
+当前已支持 GPT、Claude、DeepSeek、Gemini、Qwen 等主流模型系列。在 OpenCode 使用场景中，推荐以下模型：
+
+* `coding-minimax-m2.1-free`
+* `coding-glm-4.7-free`
+* `claude-sonnet-4-5`
+* `gpt-5`
+* `gpt-5-codex`
+
+本文档将介绍如何在不同操作系统中安装、配置并启动 OpenCode，并完成对 CaMeL AI API的接入。
+
+***
+
+在开始安装前，请确保系统已满足以下要求：
+
+* **Node.js ≥ 18.0.0**
+* 对应系统的包管理工具（可选）：
+  * macOS / Linux：`brew`
+  * Arch Linux：`paru`
+  * Windows：`choco`、`winget` 或 `scoop`
+
+***
+
+## 一、安装 OpenCode
+
+可根据所使用的系统与工具选择任意一种安装方式。
+
+1. 使用 Node.js 安装
+
+```
+# 使用 CURL 脚本快速安装
+curl -fsSL https://opencode.ai/install | bash
+
+# 使用 NPM
+npm install -g opencode-ai
+
+# 使用 Bun
+bun install -g opencode-ai
+
+# 使用 PNPM
+pnpm install -g opencode-ai
+
+# 使用 Yarn
+yarn global add opencode-ai
+```
+
+***
+
+2. 使用 Homebrew（macOS / Linux）
+
+```
+brew install sst/tap/opencode
+```
+
+***
+
+3. 使用 Paru（Arch Linux）
+
+```
+paru -S opencode-bin
+```
+
+***
+
+4. Windows 安装
+
+Windows 用户可通过以下方式安装 OpenCode：
+
+```
+# Chocolatey
+choco install opencode
+
+# WinGet
+winget install opencode
+
+# Scoop
+scoop bucket add extras
+scoop install extras/opencode
+
+# 或使用 NPM（需 Node.js 环境）- 注意：需要管理员权限
+npm install -g opencode-ai
+```
+
+***
+
+## 二、启动与登录 OpenCode
+
+安装完成后，执行以下步骤完成登录与配置。
+
+1. 登录OpenCode
+
+在终端输入以下命令：
+
+```bash  theme={null}
+opencode auth login
+```
+
+***
+
+2. 选择 AI 供应商
+
+在登录界面中选择 \*\*CaMeL AI \*\*作为模型供应商。
+
+<img src="https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-1.jpg?fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=7a22f2bc28944f940dcf8372609eca66" alt="Opencode 1" data-og-width="936" width="936" data-og-height="600" height="600" data-path="public/opencode-1.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-1.jpg?w=280&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=9e652e7d67c7db2b3e7052eae5623ad3 280w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-1.jpg?w=560&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=47adfcc8a4707e33018fffe593fc3cea 560w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-1.jpg?w=840&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=67bfa7fe48649976a2117acfd49dc252 840w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-1.jpg?w=1100&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=8be196c4461acbe66fc7f1c9534351a8 1100w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-1.jpg?w=1650&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=0a2b0985ed8b223804e3ea73b6fd9037 1650w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-1.jpg?w=2500&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=b3ff95241c70b2a8cda3f01e63c0dcd4 2500w" />
+
+***
+
+3. API Key授权
+
+输入 CaMeL AI API Key 并在 OpenCode 登录页面中输入该密钥以完成授权。
+
+<img src="https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-2.jpg?fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=06043e1e8ba2d401a1e86f2c92ee8ab1" alt="Opencode 2" data-og-width="920" width="920" data-og-height="512" height="512" data-path="public/en/opencode-2.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-2.jpg?w=280&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=8c74ed07cf4f8cef5249bb27459711bb 280w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-2.jpg?w=560&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=06bec57f7fd28f2fef0f558e4240ecd3 560w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-2.jpg?w=840&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=6a8c8489dcc940d9db1251f647d043be 840w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-2.jpg?w=1100&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=dcc0155660343c9310e910d4ade0d3d7 1100w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-2.jpg?w=1650&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=b7b2c84b44618794e4c13f74bf3074f4 1650w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-2.jpg?w=2500&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=ce28c400241fd4626fff1b0cb0509882 2500w" />
+
+***
+
+## 三、模型使用
+
+1. 安装验证
+
+可通过以下命令验证 OpenCode 是否安装并配置成功：
+
+```
+opencode
+```
+
+<img src="https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-3.jpg?fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=21b34779db6793deb109ca050fedccc3" alt="Opencode 3" data-og-width="2750" width="2750" data-og-height="1420" height="1420" data-path="public/opencode-3.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-3.jpg?w=280&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=90fa5906b724bf092b5b3888488dda0e 280w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-3.jpg?w=560&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=af0b3bdba2e3eb93b78a1e28369945ce 560w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-3.jpg?w=840&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=794254786985732269f82d515b4a20e6 840w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-3.jpg?w=1100&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=3f21cbde3928ee278107b261d63f69f1 1100w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-3.jpg?w=1650&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=9a2a8357e086bd4a80a038a045bc7068 1650w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-3.jpg?w=2500&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=c6423d7018cb474880a270219143e450 2500w" />
+
+2. 选择模型
+
+输`/models` ，搜`camelai`，选择需要的模型。
+
+<img src="https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-4.jpg?fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=09d8bbf66f1069fe42f85beb2f0297c5" alt="Opencode 4" data-og-width="1982" width="1982" data-og-height="1290" height="1290" data-path="public/opencode-4.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-4.jpg?w=280&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=a12718be908cc6e5d856a89ce594e140 280w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-4.jpg?w=560&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=1d0afe9793d8e85f8191f1d7d37a8388 560w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-4.jpg?w=840&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=b3418b4ce2601e2b45ac837fb713957e 840w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-4.jpg?w=1100&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=352a57b9b7ec2b017a19efef3f93c183 1100w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-4.jpg?w=1650&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=e640898d3c9cbdc0d7ad16da56698740 1650w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-4.jpg?w=2500&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=4cfb765253718fa0b0ed33e3b0bf74d4 2500w" />
+
+***
+
+## 四、在 OpenCode 客户端使用
+
+1. 下载 OpenCode 桌面端：[https://opencode.ai/download](https://opencode.ai/download。) 。
+2. 打开 OpenCode，输入`/model` -> `Connet provider`  -> 搜索`camelai`  -> 输入 API Key -> `Submit` 。
+
+   <img src="https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-5.jpg?fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=a8b5de9e4200adb9b17847ab6878e8f7" alt="Opencode 5" data-og-width="2552" width="2552" data-og-height="1420" height="1420" data-path="public/en/opencode-5.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-5.jpg?w=280&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=6fc733c17016a4d63154562f19b41300 280w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-5.jpg?w=560&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=a291d2934988686a80e9e71cbf7a20d0 560w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-5.jpg?w=840&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=435eb71bd5655cbe95dadcaa9c010069 840w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-5.jpg?w=1100&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=b1378814f87c675af4bd2e3232a66cca 1100w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-5.jpg?w=1650&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=568db33a134d9f302db2f36719c5f241 1650w, https://mintcdn.com/aihubmix/XeJJLFET_XPqNDov/public/en/opencode-5.jpg?w=2500&fit=max&auto=format&n=XeJJLFET_XPqNDov&q=85&s=4b514ecd736038ebb510ad9c1b22f4db 2500w" />
+3. 在模型选择栏搜`camelai` ，选择需要使用的模型即可使用。
+
+   <img src="https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-6.jpg?fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=5bfd16c82b06f725fd0ed763321bee0c" alt="Opencode 6" data-og-width="2550" width="2550" data-og-height="1422" height="1422" data-path="public/opencode-6.jpg" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-6.jpg?w=280&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=f114d982c2f9bbbec911e56460061ced 280w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-6.jpg?w=560&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=1e5d853d18513dd9377332c47e306832 560w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-6.jpg?w=840&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=788c6df70e2c9c434f186bf458d6f75c 840w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-6.jpg?w=1100&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=7ff2c04dc6918d2b56ed68ce860475fc 1100w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-6.jpg?w=1650&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=f8891ab18b6c8b7b923424545657b5c8 1650w, https://mintcdn.com/aihubmix/aax4hBrhzzthbrWx/public/opencode-6.jpg?w=2500&fit=max&auto=format&n=aax4hBrhzzthbrWx&q=85&s=5670429d62e5caf9fdcb2e3c3dd2ce33 2500w" />
+
+## 五、常见问题与提示
+
+* 若API Key无法通过验证，请重新登录[CaMeL AI](https://camel.kr777.top/token)并检查密钥有效性。
+* 查看帮助文档：`opencode` ->`/help`。
+* opencode官方文档：[https://opencode.ai/docs/](https://opencode.ai/docs/。) 。

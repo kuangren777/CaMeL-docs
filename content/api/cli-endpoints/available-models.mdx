@@ -1,0 +1,44 @@
+---
+title: "获取当前用户可用模型列表"
+description: "返回当前用户允许使用的模型列表"
+---
+
+> 返回当前用户允许使用的模型列表
+
+## 请求参数
+
+### 请求头（headers）
+
+<ResponseField type="string" required>
+  请求身份认证。接口使用 CaMeL AI Manage Key 进行身份认证。
+</ResponseField>
+
+<ResponseField type="string">
+  请求内容类型。此参数必须设置为 application/json。
+</ResponseField>
+
+## 响应参数
+
+<ResponseField name="data" type="array">
+  模型列表。
+
+  <ResponseField name="model" type="string">
+    模型名称。
+  </ResponseField>
+
+  <ResponseField name="developer_id" type="integer">
+    模型开发者 ID。
+  </ResponseField>
+
+  <ResponseField name="order" type="integer">
+    模型顺序。
+  </ResponseField>
+</ResponseField>
+
+<ResponseField name="success" type="boolean">
+  是否成功。
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  提示信息（可能为空）。请求失败时返回失败原因。
+</ResponseField>

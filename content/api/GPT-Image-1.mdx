@@ -1,0 +1,529 @@
+---
+title: "GPT Image"
+description: "OpenAI 的绘图接口 `gpt-image-1`，支持文生图（generate）、图文生图（edit）。\\"
+---
+
+>  
+
+## 1️⃣ gpt-image-1 接口说明
+
+OpenAI 的绘图接口 `gpt-image-1`，支持文生图（generate）、图文生图（edit）。\
+使用前请运行 `pip install -U openai` 升级到最新的 openai 包。
+
+### 注意事项
+
+<Warning>
+  * 生成过程中，无论任何情况导致的中断或失败，**接口调用一经发出，都会被扣取费用**
+  * 还在世的艺术家名称（如「宫崎骏」、「新海诚」等）会触发 `moderation_blocked` 报错，**导致生成失败**。你可以通过「吉卜力」、「明亮的现代日式动漫风格」等非敏感词来规避。衣着暴露或含有暗示的图片同理。
+  * 总的来说,「风格」比「艺术家」安全，像是「皮克斯」也是支持的。
+  * 更稳妥的做法是采用已故艺术家或对应的风格，如「梵高」、「蒙娜丽莎」等。
+</Warning>
+
+### 模型和费率
+
+| 模型          | 质量     | 1024x1024 | 1024x1536 | 1536x1024 |
+| ----------- | ------ | --------- | --------- | --------- |
+| gpt-image-1 | low    | \$0.011   | \$0.016   | \$0.016   |
+| gpt-image-1 | medium | \$0.042   | \$0.063   | \$0.063   |
+| gpt-image-1 | high   | \$0.167   | \$0.25    | \$0.25    |
+
+<Info>
+  注意：输入文本 Token 部分的费率是 \$5/百万 Tokens，额外计算。
+</Info>
+
+### 调用方法
+
+**端点 (Endpoints)**
+
+1. 绘图：`https://api.kr777.top/images/generations`
+2. 编辑：`https://api.kr777.top/images/edits`
+
+**Python 调用示例如下：**
+
+<CodeGroup>
+  ```py 生成 (文生图) theme={null}
+  from openai import OpenAI
+  import base64
+  import os
+
+  client = OpenAI(
+      api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key "sk-***"
+      base_url="https://api.kr777.top"
+  )
+
+  prompt = """redesign poster of the movie [Black Swan], 3D cartoon, smooth render, bright tone, 2:3 portrait."""
+
+  result = client.images.generate(
+      model="gpt-image-1",
+      prompt=prompt,
+      n=1, # 单次出图数量，最多 10 张
+      size="1024x1536", # 1024x1024 (square), 1536x1024 (3:2 landscape), 1024x1536 (2:3 portrait), auto (default) 
+      quality="high", # high, medium, low, auto (default)
+      moderation="low", # low, auto (default) 需要升级 openai 包 📍
+      background="auto", # transparent, opaque, auto (default)
+  )
+
+  print(result.usage)
+
+  # 定义文件名前缀和保存目录
+  output_dir = "." # 可以指定其他目录
+  file_prefix = "image_gen"
+
+  # 确保输出目录存在
+  os.makedirs(output_dir, exist_ok=True)
+
+  # 遍历所有返回的图片数据
+  for i, image_data in enumerate(result.data):
+      image_base64 = image_data.b64_json
+      if image_base64: # 确保 b64_json 不为空
+          image_bytes = base64.b64decode(image_base64)
+
+          # --- 文件名冲突处理逻辑开始 ---
+          current_index = i
+          while True:
+              # 构建带自增序号的文件名
+              file_name = f"{file_prefix}_{current_index}.png"
+              file_path = os.path.join(output_dir, file_name) # 构建完整文件路径
+
+              # 检查文件是否存在
+              if not os.path.exists(file_path):
+                  break # 文件名不冲突，跳出循环
+
+              # 文件名冲突，增加序号
+              current_index += 1
+
+          # 使用找到的唯一 file_path 保存图片到文件
+          with open(file_path, "wb") as f:
+              f.write(image_bytes)
+          print(f"图片已保存至：{file_path}")
+      else:
+          print(f"第 {i} 张图片数据为空，跳过保存。")
+  ```
+
+  ```py 编辑 (多图+文生图) theme={null}
+  from openai import OpenAI
+  import base64
+  import os
+
+  client = OpenAI(
+      api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key "sk-***"
+      base_url="https://api.kr777.top"
+  )
+
+  prompt = """redesign poster of the movie [Black Swan], 3D cartoon, smooth render, bright tone, 2:3 portrait."""
+
+  result = client.images.edit(
+      model="gpt-image-1",
+      image=open("yourpath/edit.jpg", "rb"), #多参考图应使用 [列表，]
+      n=2, # 单次数量
+      prompt=prompt,
+      size="1024x1536", # 1024x1024 (square), 1536x1024 (3:2 landscape), 1024x1536 (2:3 portrait), auto (default)
+      input_fidelity="high", # 特征保留参数，默认 low
+      # moderation="low", # edit 不支持 moderation
+      quality="high" # high, medium, low, auto (default)
+  )
+
+  print(result.usage)
+
+  # 定义文件名前缀和保存目录
+  output_dir = "." # 可以指定其他目录
+  file_prefix = "image_edit" # 修改文件名前缀
+
+  # 确保输出目录存在
+  os.makedirs(output_dir, exist_ok=True)
+
+  # --- 遍历 API 返回的每张图片数据 ---
+  for i, image_item in enumerate(result.data):
+      image_base64 = image_item.b64_json
+      if image_base64 is None:
+          print(f"警告：第 {i+1} 张图片没有返回 base64 数据，跳过保存。")
+          continue # 如果没有 b64_json 数据，跳到下一张图片
+
+      image_bytes = base64.b64decode(image_base64)
+
+      # --- 为当前图片寻找不冲突的文件名 ---
+      current_index = 0 # 每次都从 0 开始检查，或者维护一个全局递增的索引
+      while True:
+          # 构建带自增序号的文件名
+          file_name = f"{file_prefix}_{current_index}.png"
+          file_path = os.path.join(output_dir, file_name) # 构建完整文件路径
+
+          # 检查文件是否存在
+          if not os.path.exists(file_path):
+              break # 文件名不冲突，跳出内部循环
+
+          # 文件名冲突，增加序号
+          current_index += 1
+
+      # 使用找到的唯一 file_path 保存当前图片到文件
+      try:
+          with open(file_path, "wb") as f:
+              f.write(image_bytes)
+          print(f"第 {i+1} 张编辑后的图片已保存至：{file_path}")
+      except Exception as e:
+          print(f"保存第 {i+1} 张图片时出错 ({file_path}): {e}")
+  ```
+</CodeGroup>
+
+更多的参数细节可以参考 [OpenAI 官方文档](https://platform.openai.com/docs/api-reference/images/create)
+
+### 输出示例
+
+<CodeGroup>
+  ```json 生成 theme={null}
+  Usage(input_tokens=150, input_tokens_details=UsageInputTokensDetails(image_tokens=0, text_tokens=150), output_tokens=6240, total_tokens=6390)
+  图片已保存至：./image_gen_14.png
+  ```
+
+  ```json 编辑 theme={null}
+  Usage(input_tokens=992, input_tokens_details=UsageInputTokensDetails(image_tokens=646, text_tokens=346), output_tokens=12480, total_tokens=13472)
+  第 1 张编辑后的图片已保存至：./image_edit_1.png
+  第 2 张编辑后的图片已保存至：./image_edit_2.png
+  ```
+</CodeGroup>
+
+### 被拒的情况
+
+请求被拒的错误信息如下：
+
+```json  theme={null}
+Error code: 400 - {'error': {'message': 'Your request was rejected as a result of our safety system. Your request may contain content that is not allowed by our safety system.', 'type': 'user_error', 'param': None, 'code': 'moderation_blocked'}}
+```
+
+对于单次请求生成 2-10 张图片的情况，如果系统检测到请求涉嫌违反平台政策，该请求中的违规部分将不会被生成。这可能导致实际生成图片数量少于用户请求数量，然而多图的情况下，不会抛出 `moderation_blocked`。
+因此，请在创作中主动规避潜在的知识产权（IP）或版权问题，以减少生成被系统拦截的风险，确保创作顺利完成。
+
+**✍️ 关键提示：**
+
+* 避免直接使用已知的受版权保护角色、品牌标志、名人肖像等
+* 可以采用「风格借鉴」「创意改编」「泛指描述」等方式表达
+* 若需引用特定元素，请提前确认该元素是否处于公有领域
+
+### 实用提示
+
+<Tip>
+  * 支持任何语言，中文绘制也很稳定，但我们也不建议绘制大量的文本
+  * size 参数不支持显示传入 size="auto"，默认即 auto
+  * 画幅比例可以在 prompt 中指定，支持 2:3、3:2、1:1，也可以在 size 参数中设置。
+  * 支持控制敏感度的 `moderation` 参数，但这个参数设为 low 也可能被拒，比如说维纳斯过于暴露
+  * edits 端口不支持 `moderation` 参数
+  * 文本描述和参考图搭配，融图效果更准确
+  * 上传的图片可以做压缩预处理，提升速度
+  * 支持透明背景，免抠图。——只需要在 Prompt 中补充要求
+</Tip>
+
+***
+
+## 2️⃣ GPT 绘图逆向接口说明
+
+为满足用户的强烈需求，我们特别推出了两个逆向接口：`gpt-4o-image` 与 `gpt-4o-image-vip`。其中，VIP 模型在性能和稳定性方面表现更为出色。\
+请注意，这些逆向接口无法保证完全稳定，可能会出现 `🕐 Queuing...` 排队状态或生成失败的情况，因此建议仅将其用于体验新功能或进行测试。\
+鉴于 OpenAI 已正式发布 `gpt-image-1` 接口，考虑到调用成本因素，我们将暂时保留这些逆向接口，并提供完全兼容的调用方式。
+
+### 注意事项
+
+<Warning>
+  * 生成过程中，无论任何情况导致的中断或失败，**接口调用一经发出，都会被扣取费用**
+  * 还在世的艺术家名称（如「宫崎骏」、「新海诚」等）会触发 `input_moderation` 报错，**导致生成失败**。你可以通过「吉卜力」、「明亮的现代日式动漫风格」等非敏感词来规避
+  * 总的来说,「风格」比「艺术家」安全，像是「皮克斯」也是支持的
+  * 更稳妥的做法是采用已故艺术家或对应的风格，如「梵高」、「蒙娜丽莎」等
+</Warning>
+
+### 模型和费率
+
+| 模型                 | 后台扣费 (美元/次) | 约 (人民币/次) |
+| ------------------ | ----------- | --------- |
+| `gpt-4o-image-vip` | \$0.009     | 折合约 ¥0.06 |
+| `gpt-4o-image`     | \$0.005     | 折合约 ¥0.04 |
+
+<Info>
+  1. 后台费率以美元为准。
+  2. 由于逆向接口的维护成本上升，单次调用的价格已经上调。<sub>（更新日期：20250604）</sub>
+  3. 正式的 `gpt-image-1` 输入文本 Token 部分的费率是 \$5/百万 Tokens，逆向接口只按图片绘制次数计算。
+</Info>
+
+### Python 调用示例
+
+使用大家熟悉的 `v1/completions` 端点来提供支持，完美兼容，具体使用可以参考：
+
+<CodeGroup>
+  ```py 文生图 theme={null}
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key "sk-***"
+      base_url="https://api.kr777.top"
+  )
+
+  # 创建聊天完成请求
+  stream = client.chat.completions.create(
+      model="gpt-4o-image-vip", #list: gpt-4o-image-vip, gpt-4o-image
+      messages=[
+          {
+              "role": "user",
+              "content": [
+                  {
+                      "type": "text",
+                      "text": """Redesign [Girl wearing a pearl earring] as an anime-style illustrated cover. Preserve original essence and composition. Render in refined Kyoto Anime-inspired style—soft brushwork, cinematic lighting, progressive depth. 
+  Format in AV cover layout: 
+  Japanese-English mixed typography, serif title with significant visual hierarchy - sense of design is the key.
+  Extract words tha conveys profound meanings as title, then creative slogan, the original name can be a smaller information ONLY if necessary.
+  Subtly embed watermark "jerlin" in clothing or background. Maintain emotional tone and posture, soften only when necessary. 2:3 portrait"""
+                  }
+              ]
+          }
+      ],
+      stream=True
+  )
+
+  # 使用 for 循环处理流式响应
+  for chunk in stream:
+      try:
+          if chunk.choices and len(chunk.choices) > 0 and chunk.choices[0].delta and chunk.choices[0].delta.content:
+              print(chunk.choices[0].delta.content, end="", flush=True)
+      except Exception as e:
+          print(f"\n处理响应时出现错误：{str(e)}")
+  ```
+
+  ```py 图文生图 theme={null}
+  from openai import OpenAI
+  import base64
+
+  # Function to encode the image
+  def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+      return base64.b64encode(image_file.read()).decode('utf-8')
+
+  # Get the image path
+  image_path = "Portland_Head_Light__Maine.jpg"
+
+  # Encode the image
+  base64_image = encode_image(image_path)
+
+  client = OpenAI(
+      api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key
+      base_url="https://api.kr777.top"
+  )
+
+  stream = client.chat.completions.create(
+      model="gpt-4o-image-vip", #gpt-4o-image-vip, gpt-4o-image
+      messages=[
+          {
+              "role": "user",
+              "content": [
+                  {
+                      "type": "text",
+                      "text": """convert the image into the style of ghibli，bright tone. 3:2"""
+                  },
+                  {
+                      "type": "image_url",
+                      "image_url": {
+                          "url": f"data:image/jpeg;base64,{base64_image}"
+                      }
+                  }
+              ]
+          }
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      try:
+          if chunk.choices and len(chunk.choices) > 0 and chunk.choices[0].delta and chunk.choices[0].delta.content:
+              print(chunk.choices[0].delta.content, end="", flush=True)
+      except Exception as e:
+          print(f"\n处理响应时出现错误：{str(e)}")
+  ```
+
+  ```py 多图+文生图 theme={null}
+  from openai import OpenAI
+  import base64
+
+  # Function to encode the image
+  def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+      return base64.b64encode(image_file.read()).decode('utf-8')
+
+  # Get the image path
+  image_path = "Portland_Head_Light__Maine.jpg"
+
+  # Encode the first image
+  base64_image1 = encode_image(image_path)
+
+  # Get the second image path
+  image_path2 = "ref.jpeg"
+
+  # Encode the second image
+  base64_image2 = encode_image(image_path2)
+
+  client = OpenAI(
+      api_key="CAMELAI_API_KEY", # 换成你在后台生成的 Key
+      base_url="https://api.kr777.top"
+  )
+
+  stream = client.chat.completions.create(
+      model="gpt-4o-image-vip", #gpt-4o-image-vip, gpt-4o-image
+      messages=[
+          {
+              "role": "user",
+              "content": [
+                  {
+                      "type": "text",
+                      "text": """convert image 1 into the style of image 2, bright tone. 2:3"""
+                  },
+                  {
+                      "type": "image_url",
+                      "image_url": {
+                          "url": f"data:image/jpeg;base64,{base64_image1}"
+                      }
+                  },
+                  {
+                      "type": "image_url",
+                      "image_url": {
+                          "url": f"data:image/jpeg;base64,{base64_image2}"
+                      }
+                  }
+              ]
+          }
+      ],
+      stream=True
+  )
+
+  # 使用 for 循环处理流式响应
+  for chunk in stream:
+      try:
+          if chunk.choices and len(chunk.choices) > 0 and chunk.choices[0].delta and chunk.choices[0].delta.content:
+              print(chunk.choices[0].delta.content, end="", flush=True)
+      except Exception as e:
+          print(f"\n处理响应时出现错误：{str(e)}")
+  ```
+</CodeGroup>
+
+### 输出示例
+
+```
+{
+  "prompt": "Redesign 'Girl with a Pearl Earring' as an anime-style illustrated cover. Preserve the original essence and composition: the iconic side-glance pose, serene expression, and intimate framing. Render in refined Kyoto Anime-inspired style with soft brushwork, cinematic lighting, and progressive depth. Create an AV cover layout with Japanese-English mixed typography, using a prominent serif title with strong visual hierarchy. Extract profound words for the title and include a creative slogan. The original name 'Girl with a Pearl Earring' should appear as smaller text if needed. Subtly embed the watermark 'jerlin' in clothing or background. For modesty, replace any potential nudity with flowing fabric, hair, or veils while maintaining the emotional tone and posture. Soften details only when necessary.",
+  "ratio": "2:3"
+}
+
+>🕐 Queuing.
+
+>⚡ Generating.....
+
+>🏃‍ Progress 11....19....27...34....42....50....57...64....[100](https://videos.openai.com/vg-assets/assets%2Ftask_01jsccq77nfcsab7dn8bx7z230%2Fsrc_1.png?st=2025-04-21T13%3A08%3A48Z&se=2025-04-27T14%3A08%3A48Z&sks=b&skt=2025-04-21T13%3A08%3A48Z&ske=2025-04-27T14%3A08%3A48Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=xm6K6M7au3F3Vd9qcYxR3mYWrqAHsgbagbUV5GQo39w%3D&az=oaivgprodscus)
+
+> ✅ Generation complete
+
+
+![gen_01jsccq83pfg6ssfqf3pzfaytj](https://filesystem.site/cdn/20250421/XBCrAs6qvMARG7BkFX0KI3MBs1qoto.png)
+
+[Click to download](https://filesystem.site/cdn/download/20250421/XBCrAs6qvMARG7BkFX0KI3MBs1qoto.png)
+
+![gen_01jsccq83nf6ftmtx8y48h383y](https://filesystem.site/cdn/20250421/tQ62gh0BbdESApNmFJMNzsdUFDflkl.png)
+
+[Click to download](https://filesystem.site/cdn/download/20250421/tQ62gh0BbdESApNmFJMNzsdUFDflkl.png)%      
+```
+
+### OpenAI 正式接口兼容
+
+如果你更偏好 OpenAI 最新发布的 Image generation 调用方式，可以参考以下处理，注意 3 点即可：
+
+1. 不能传质量参数，模型 `gpt-4o-image-vip` 和 `gpt-4o-image` 自身捆绑了
+2. 不支持打印追踪 Token 用量的 usage 字段
+3. 最新的输出是 Base64 图片数据，用例已经做了自动保存
+
+```py Python theme={null}
+from openai import OpenAI
+import os
+import requests
+import base64
+
+client = OpenAI(
+    api_key="CAMELAI_API_KEY", # 替换成你的 CaMeL AI 密钥
+    base_url="https://api.kr777.top"
+)
+
+prompt = """
+redesign poster of the movie [Black Swam], 3D cartoon, smooth render, bright tone, 2:3
+"""
+
+result = client.images.generate(
+    model="gpt-4o-image-vip",
+    prompt=prompt,
+    n=1, # 单次数量
+    size="1024x1536", # 1024x1024 (square), 1536x1024 (3:2 landscape), 1024x1536 (2:3 portrait), auto (default)
+    #quality="high" # 逆向模型不能传质量参数，模型捆绑了 📍
+)
+
+print(result) # 打印完整的 API 响应，逆向接口不支持 usage 📍
+
+# 定义文件名前缀和保存目录
+output_dir = "." # 可以指定其他目录
+file_prefix = "image_gen-逆向"
+
+# 确保输出目录存在
+os.makedirs(output_dir, exist_ok=True)
+
+# 遍历所有返回的图片数据
+for i, image_data in enumerate(result.data):
+    # 优先处理 base64 字符串
+    if hasattr(image_data, "b64_json") and image_data.b64_json:
+        image_bytes = base64.b64decode(image_data.b64_json)
+        current_index = i
+        while True:
+            file_name = f"{file_prefix}_{current_index}.png"
+            file_path = os.path.join(output_dir, file_name)
+            if not os.path.exists(file_path):
+                break
+            current_index += 1
+        with open(file_path, "wb") as f:
+            f.write(image_bytes)
+        print(f"图片已保存至：{file_path} (base64)")
+    # 其次处理 url 字段（保留稳健处理，防止兼容接口再变更）
+    elif hasattr(image_data, "url") and image_data.url:
+        try:
+            response = requests.get(image_data.url, stream=True)
+            response.raise_for_status()
+            image_bytes = response.content
+            current_index = i
+            while True:
+                file_name = f"{file_prefix}_{current_index}.png"
+                file_path = os.path.join(output_dir, file_name)
+                if not os.path.exists(file_path):
+                    break
+                current_index += 1
+            with open(file_path, "wb") as f:
+                f.write(image_bytes)
+            print(f"图片已保存至：{file_path} (url)")
+        except requests.exceptions.RequestException as e:
+            print(f"下载第 {i} 张图片失败：{e}")
+        except Exception as e:
+            print(f"处理第 {i} 张图片时发生错误：{e}")
+    else:
+        print(f"第 {i} 张图片数据中既无 b64_json 也无 url，跳过保存。")
+```
+
+### 效果展示
+
+<Card title="戴珍珠项链的女孩" img="https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/en/Girl-with-a-Pearl-Earring.PNG?fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=43b53bd84463e7be86540db677b61a55" data-og-width="1024" width="1024" data-og-height="1536" height="1536" data-path="public/en/Girl-with-a-Pearl-Earring.PNG" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/en/Girl-with-a-Pearl-Earring.PNG?w=280&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=7f9996a44065f7dd318db45506f85406 280w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/en/Girl-with-a-Pearl-Earring.PNG?w=560&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=092bf4f3ba2ecd5bf1e9f96b90ebf5b9 560w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/en/Girl-with-a-Pearl-Earring.PNG?w=840&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=4aafab3cf19d52838897bccc6f68fadb 840w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/en/Girl-with-a-Pearl-Earring.PNG?w=1100&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=477829d08a44f7081fcd8bf39aae0078 1100w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/en/Girl-with-a-Pearl-Earring.PNG?w=1650&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=247377bffc829d70f508b74ff818c15a 1650w, https://mintcdn.com/aihubmix/njYPCqTk0m3HBNaY/public/en/Girl-with-a-Pearl-Earring.PNG?w=2500&fit=max&auto=format&n=njYPCqTk0m3HBNaY&q=85&s=daf175ba5a39b3e0a5b4e7ac98c4e4ec 2500w">
+  1. 名画重演绎，带排版和水印直出。
+</Card>
+
+<Card title="皮克斯卡通" img="https://mintcdn.com/aihubmix/uiaREuKGPdgKFO7R/public/en/pixar.png?fit=max&auto=format&n=uiaREuKGPdgKFO7R&q=85&s=b1beac68264984bbbf312b33f592554d" data-og-width="1536" width="1536" data-og-height="1024" height="1024" data-path="public/en/pixar.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/uiaREuKGPdgKFO7R/public/en/pixar.png?w=280&fit=max&auto=format&n=uiaREuKGPdgKFO7R&q=85&s=fd5e814f615cd9d8392e323cdc799947 280w, https://mintcdn.com/aihubmix/uiaREuKGPdgKFO7R/public/en/pixar.png?w=560&fit=max&auto=format&n=uiaREuKGPdgKFO7R&q=85&s=3e6f2612793b2d978d090ad30b2d63c6 560w, https://mintcdn.com/aihubmix/uiaREuKGPdgKFO7R/public/en/pixar.png?w=840&fit=max&auto=format&n=uiaREuKGPdgKFO7R&q=85&s=6ccc2c1048670a6a4a88ca38b3b2bde6 840w, https://mintcdn.com/aihubmix/uiaREuKGPdgKFO7R/public/en/pixar.png?w=1100&fit=max&auto=format&n=uiaREuKGPdgKFO7R&q=85&s=9ffa5d4fd9855c4e4b1d503524050a85 1100w, https://mintcdn.com/aihubmix/uiaREuKGPdgKFO7R/public/en/pixar.png?w=1650&fit=max&auto=format&n=uiaREuKGPdgKFO7R&q=85&s=3b4b7647d347287dd0e215a343144b7a 1650w, https://mintcdn.com/aihubmix/uiaREuKGPdgKFO7R/public/en/pixar.png?w=2500&fit=max&auto=format&n=uiaREuKGPdgKFO7R&q=85&s=ae41c157e8b8bb1917e00b275a1587fd 2500w">
+  1. 皮克斯 3D 卡通风格，稳如老狗。
+</Card>
+
+<Card title="3D" img="https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/ghibli.png?fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=90fe76ab3bd89069484c91ff1d3e9509" data-og-width="1024" width="1024" data-og-height="1536" height="1536" data-path="public/en/ghibli.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/ghibli.png?w=280&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=d83dd05db0c53d2f9960bd5d025ab0b8 280w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/ghibli.png?w=560&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=6c313f2132a01b852b2bb29bf2064ffe 560w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/ghibli.png?w=840&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=128148c01d4e85344334b3385c2ea1a9 840w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/ghibli.png?w=1100&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=c602d0bf11bd6d363a32de2dea62dea3 1100w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/ghibli.png?w=1650&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=bd0867db80dd460cbe364fc09104c5a9 1650w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/ghibli.png?w=2500&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=a9d582689f4d089f53770b578f8e1270 2500w">
+  1. 最受欢迎的吉卜力
+</Card>
+
+### 实用提示
+
+<Tip>
+  * 支持任何语言，中文绘制也很稳定，但我们也不建议绘制大量的文本。
+  * 画幅比例在 prompt 中指定，否则 4o 自动判断。支持 2:3、3:2、1:1。
+  * 没有灵感就给参考图，支持单图和多图。
+  * 上传的图片可以做压缩预处理，提升速度。
+  * 支持透明背景，免抠图。——只需要在 Prompt 中补充要求。
+</Tip>

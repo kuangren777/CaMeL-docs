@@ -1,0 +1,15 @@
+/* Project-specific overrides on top of nextra-theme-docs/style.css */
+
+/* Brand green primary, mapped to Tailwind primary palette used by Nextra */
+:root {
+  --x-color-primary-50: #f0fdf4;
+  --x-color-primary-100: #dcfce7;
+  --x-color-primary-200: #bbf7d0;
+  --x-color-primary-300: #86efac;
+  --x-color-primary-400: #4ade80;
+  --x-color-primary-500: #16a34a;
+  --x-color-primary-600: #15803d;
+  --x-color-primary-700: #166534;
+  --x-color-primary-800: #14532d;
+  --x-color-primary-900: #052e16;
+}

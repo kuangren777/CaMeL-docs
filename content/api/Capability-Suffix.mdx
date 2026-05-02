@@ -1,0 +1,68 @@
+---
+title: "模型后缀能力说明"
+description: "通过模型后缀，部分模型的高级能力已预先配置，用户可在统一的 OpenAI / Chat 接口下直接使用。"
+---
+
+> 通过模型后缀，部分模型的高级能力已预先配置，用户可在统一的 OpenAI / Chat 接口下直接使用。
+
+## 已支持的模型
+
+* [claude-sonnet-4-5-think](https://camel.kr777.top/model/claude-sonnet-4-5-think)
+* [claude-opus-4-5-think](https://camel.kr777.top/model/claude-opus-4-5-think)
+* [gpt-5.2-high](https://camel.kr777.top/model/gpt-5.2-high)
+* [gpt-5.2-low](https://camel.kr777.top/model/gpt-5.2-low)
+* [gemini-3-pro-preview-search](https://camel.kr777.top/model/gemini-3-pro-preview-search)
+* [gemini-3-flash-preview-search](https://camel.kr777.top/model/gemini-3-flash-preview-search)
+
+## Claude 思考模型
+
+Claude 模型默认不启用思考模式，若需使用其深度推理能力，通常需要通过 Claude 原生接口调用。为方便用户在 OpenAI 兼容接口下直接使用该能力，现提供 claude `-think` 模型，该模型已预先开启思考模式。
+
+### 已支持的模型
+
+* [claude-sonnet-4-5-think](https://camel.kr777.top/model/claude-sonnet-4-5-think)
+* [claude-opus-4-5-think](https://camel.kr777.top/model/claude-opus-4-5-think)
+
+### 说明
+
+1. 思考能力通过模型名称显式选择
+2. Claude 思考模型使用平台默认的上下文与 token 配置
+   * Sonnet 系列默认 `max_tokens = 32k`
+   * Opus 系列默认 `max_tokens = 64k`
+3. 无需额外参数，调用方式与普通模型一致
+
+***
+
+## GPT 思考模型
+
+GPT-5.2 的推理强度仅支持在 `/responses` 接口中进行配置。为兼容统一的 OpenAI `/Chat` 接口，平台提供 `GPT-5.2-*` 系列预配置模型，在模型层固定不同级别的推理强度，用户可直接调用使用。
+
+### 已支持的模型
+
+* [gpt-5.2-high](https://camel.kr777.top/model/gpt-5.2-high)
+* [gpt-5.2-low](https://camel.kr777.top/model/gpt-5.2-low)
+
+### 说明
+
+1. -low/high 表示推理强度
+2. 推理强度通过模型名称确定，无需传入额外字段
+
+***
+
+## Google 搜索增强模型
+
+Gemini 模型默认不开启 Google Search，若需开启，需使用 Gemini 原生接口。为方便用户在 OpenAI 兼容接口下直接使用该能力，部分 Gemini 模型已集成 Google 官方搜索能力。通过选择对应的模型名称，即可在生成过程中自动启用搜索，无需额外参数。
+
+### 已支持的模型
+
+* [gemini-3-pro-preview-search](https://camel.kr777.top/model/gemini-3-pro-preview-search)
+* [gemini-3-flash-preview-search](https://camel.kr777.top/model/gemini-3-flash-preview-search)
+
+### 说明
+
+1. 带 `-search` 后缀的模型已集成 Google 官方搜索能力，适用于需要实时信息、外部事实校验、最新数据参考等场景
+2. 搜索能力会产生额外费用，该费用将以独立日志形式计入总费用
+   * 当前版本暂不展示搜索费用的明细日志，后续将补充
+3. 仅支持 **OpenAI 兼容格式** 调用
+   * 不支持 Gemini 原生 SDK
+   * 如使用 Gemini 官方 SDK，请参考对应版本非思考模型接口调用示例

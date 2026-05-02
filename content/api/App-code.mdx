@@ -1,0 +1,113 @@
+---
+title: "构建 AI 共赢生态"
+description: "CaMeL AI 推出应用标识码 APP-Code，为开发者们提供全部模型 10% 优惠。"
+---
+
+> CaMeL AI 推出应用标识码 APP-Code，为开发者们提供全部模型 10% 优惠。
+
+主要用于优化你的 API 调用成本，**根据你的有效域名生成一行标识码，加入 headers 立即生效。**
+
+* **对于平台**：平台方所有 CaMeL AI 调用成本得到降低，用户本身没有优惠。
+* **对于开发者或普通用户**：通过你的工具发出的 CaMeL AI 调用都享受优惠，即使由你的用户发起。
+
+接入并使用之后，你会在用量的日志明细中看到请求的优惠。
+
+<img src="https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/app-code.png?fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=87414613b29f2a1f5b5fd28b0c24223c" alt="图片" data-og-width="2345" width="2345" data-og-height="975" height="975" data-path="public/en/app-code.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/app-code.png?w=280&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=91289ea3e0c798e820f0ac67cf3d503b 280w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/app-code.png?w=560&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=3a20e9f3bf8c7fe2b64ad6ca341bc525 560w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/app-code.png?w=840&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=e1c4b373efd20ba0b26e815c85c39a77 840w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/app-code.png?w=1100&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=d88c717fa63834596514b4282f5bed00 1100w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/app-code.png?w=1650&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=1894fcb67aa363caebed66e7aa23cdab 1650w, https://mintcdn.com/aihubmix/axGkcFk0FkcdXl5v/public/en/app-code.png?w=2500&fit=max&auto=format&n=axGkcFk0FkcdXl5v&q=85&s=4e050516322d25d80a3b93e74d8123fb 2500w" />
+
+## 1️⃣ 调用方法：
+
+<CodeGroup>
+  ```shell Curl 方式 theme={null}
+  curl https://api.kr777.top/responses \       
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer sk-***" \
+    -H "APP-Code:***" \
+    -d '{
+      "model": "gpt-4o-2024-11-20",
+      "input": "Hello! Please say Hello back to me."
+    }'
+  ```
+
+  ```py Openai sdk 方式 theme={null}
+  completion = client.chat.completions.create(
+    extra_headers={
+      "APP-Code":"***"
+    },
+    model="gpt-4o",
+    messages=[
+      {
+        "role": "user",
+        "content": "What is the meaning of life?"
+      }
+    ]
+  )
+  ```
+</CodeGroup>
+
+## 2️⃣ 注意事项
+
+1. gemini 的 header 稍微特殊，这样加：
+
+```py Python theme={null}
+    client = genai.Client(
+        api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+        http_options={
+            "base_url": "https://api.kr777.top/gemini",
+            "headers": {
+                "APP-Code": "***"
+            }
+        },
+    )
+```
+
+2. Claude 原生调用也是加 extra\_headers：
+
+```py Python theme={null}
+import os
+import anthropic
+
+client = anthropic.Anthropic(
+    api_key="sk-***", # 🔑 换成你在 CaMeL AI 生成的密钥
+    base_url="https://camel.kr777.top"
+)
+
+message = client.messages.create(
+    extra_headers={"APP-Code":"***"},
+    model="claude-3-7-sonnet-20250219",
+    max_tokens=1024,
+    messages=[
+        {"role": "user", "content": "Hello, Claude"}
+    ]
+)
+
+print(message.content) 
+```
+
+## 3️⃣ 优惠使用条款
+
+使用 APP-Code 享受优惠的同时，请严格遵循以下使用条款，CaMeL AI 保留对所有条款的最终解释权。
+
+<Note>
+  **开源产品使用规范**
+
+  如果您的产品是开源的，只需要在产品功能中体现 CaMeL AI 作为 AI 模型供应商之一即可，形式不限。
+</Note>
+
+<Note>
+  **闭源产品使用规范**
+
+  如果您的产品是闭源的，需要在产品界面、用户协议或相关说明中提及模型服务来源。
+
+  示例说明：
+
+  * "CaMeL AI 提供 AI 模型技术支持"
+  * "AI 模型服务来自 CaMeL AI"
+  * 在应用的关于页面或帮助文档中注明相关信息
+</Note>
+
+<Note>
+  **活动时效说明**
+
+  APP-Code 优惠活动有效期至 **2025 年 12 月 31 日**。
+  优惠政策可能调整，请及时关注官方公告获取最新优惠信息。
+</Note>

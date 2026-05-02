@@ -1,0 +1,38 @@
+---
+title: "删除 KEY"
+description: "根据 token_id 删除一个 KEY"
+---
+
+> 根据 token_id 删除一个 KEY
+
+## 请求参数
+
+### 请求头（headers）
+
+<ResponseField type="string" required>
+  请求身份认证。接口使用 CaMeL AI Manage Key 进行身份认证。
+</ResponseField>
+
+<ResponseField type="string">
+  请求内容类型。此参数必须设置为 application/json。
+</ResponseField>
+
+### 路径参数（Path）
+
+<ParamField path="token_id" type="integer" required>
+  KEY 的 ID。
+</ParamField>
+
+## 响应参数
+
+<ResponseField name="success" type="boolean">
+  是否成功。
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  提示信息（可能为空）。请求失败时返回失败原因。
+</ResponseField>
+
+<ResponseField name="data" type="object">
+  删除结果对象（如接口返回）。可能为空对象 `{}`。
+</ResponseField>

@@ -1,0 +1,372 @@
+---
+title: "TTS 文本转语音"
+description: "使用 AI 模型将文本转换为自然语音，支持多种语音风格和输出格式"
+---
+
+> 使用 AI 模型将文本转换为自然语音，支持多种语音风格和输出格式
+
+## 介绍
+
+文本转语音（TTS）API 基于先进的生成 AI 模型，可以将输入的文本转换为逼真的语音音频。支持多种用途：
+
+* 为书面博客文章配音
+* 生成多种语言的语音音频
+* 提供实时音频输出流
+
+## 可用模型列表
+
+### OpenAI 模型
+
+* [gpt-4o-audio-preview](https://camel.kr777.top/model/gpt-4o-audio-preview) —— OpenAI 最新的音频生成模型，支持对话式音频生成
+* [**gpt-4o-mini-tts**](https://camel.kr777.top/model/gpt-4o-mini-tts) —— 智能实时应用的首选模型，支持高级语音控制，可以通过提示词控制多种语音特性：
+  1. 口音 (Accent)
+  2. 情感范围 (Emotional range)
+  3. 语调 (Intonation)
+  4. 印象/风格 (Impressions)
+  5. 语速 (Speed of speech)
+  6. 语调 (Tone)
+  7. 轻声说话 (Whispering)
+* [**tts-1-hd**](https://camel.kr777.top/model/tts-1-hd)  —— 高清音质的上一代 TTS 模型
+* [**tts-1**](https://camel.kr777.top/model/tts-1) —— 标准 TTS 模型，平衡质量和速度
+
+### Gemini 模型
+
+* [**gemini-2.5-flash-preview-tts**](https://camel.kr777.top/model/gemini-2.5-flash-preview-tts) —— Gemini 快速 TTS 模型，支持单说话人和多说话人音频生成
+* [**gemini-2.5-pro-preview-tts**](https://camel.kr777.top/model/gemini-2.5-pro-preview-tts) —— Gemini 专业 TTS 模型，支持单说话人和多说话人音频生成
+
+**性能建议：**
+
+1. 为获得最快的响应时间，建议使用 `wav` 或 `pcm` 作为响应格式
+2. 对于高质量音频，建议使用 `tts-1-hd`
+3. 对于更快的生成速度，使用 `tts-1`
+4. 对于智能语音应用，推荐使用 `gpt-4o-mini-tts`
+5. 对于需要多说话人对话的场景，推荐使用 Gemini TTS 模型
+
+## API 接口
+
+### 请求地址
+
+```shellscript  theme={null}
+POST https://api.kr777.top/audio/speech
+```
+
+### 请求头
+
+```shellscript  theme={null}
+Authorization: Bearer $CAMELAI_API_KEY
+Content-Type: application/json
+```
+
+### 请求参数
+
+#### 标准 TTS 参数
+
+标准参数适用于 tts-1, tts-1-hd, gpt-4o-mini-tts, gemini-2.5-flash-preview-tts 以及 gemini-2.5-pro-preview-tts。
+
+| 参数               | 类型     | 必填 | 说明                                                                                                             |
+| :--------------- | :----- | :- | :------------------------------------------------------------------------------------------------------------- |
+| model            | string | 是  | 要使用的模型 ID。可选值：`tts-1`、`tts-1-hd`、`gpt-4o-mini-tts`、`gemini-2.5-flash-preview-tts`、`gemini-2.5-pro-preview-tts` |
+| input            | string | 是  | 要生成音频的文本，最大长度为 4096 个字符                                                                                        |
+| voice            | string | 是  | 用于合成的语音。见下方语音列表                                                                                                |
+| response\_format | string | 否  | 音频输出格式。支持的音频格式包括： `mp3`、 `opus`、 `aac` 、 `flac`、 `wav`、 `pcm`，默认使用  `mp3` 格式。注意：Gemini 模型仅支持 `wav`和 `pcm` 格式。  |
+| speed            | number | 否  | 生成音频的语速。取值范围 0.25 到 4.0，默认为1.0。注意：   `gpt-4o-mini-tts` 和 `Gemini` 模型不支持此参数，但可以通过自然语言描述来控制语速。                   |
+| instructions     | string | 否  | 语音生成指令，可以详细指定语音风格、语调和情感等特性，仅适用于 `gpt-4o-mini-tts` 和 `Gemini` 模型。                                               |
+
+#### gpt-4o-audio-preview 参数
+
+| 参数         | 类型     | 必填 | 说明                              |
+| :--------- | :----- | :- | :------------------------------ |
+| model      | string | 是  | 设置为 `gpt-4o-audio-preview`      |
+| modalities | array  | 是  | 设置为 `["text", "audio"]` 启用音频输出  |
+| audio      | object | 是  | 音频配置对象，包含 `voice` 和 `format` 字段 |
+| messages   | array  | 是  | 聊天消息数组，与标准聊天格式相同                |
+
+## 语音列表
+
+### OpenAI 语音
+
+支持以下语音选项：
+
+* **alloy** - 中性、平衡
+* **ash** - 清晰、专业
+* **ballad** - 温暖、叙事性
+* **coral** - 友好、平易近人
+* **echo** - 清晰、明亮
+* **fable** - 富有表现力、戏剧性
+* **onyx** - 深沉、权威
+* **nova** - 活泼、充满活力
+* **sage** - 成熟、知识渊博
+* **shimmer** - 柔和、舒缓
+* **verse** - 清晰、多才多艺
+* **marin** - 自然、友好
+* **cedar** - 稳定、可靠
+
+### Gemini 语音
+
+支持以下 30 种语音选项：
+
+| 语音名称          | 风格           | 语音名称              | 风格              | 语音名称             | 风格            |
+| :------------ | :----------- | :---------------- | :-------------- | :--------------- | :------------ |
+| **Zephyr**    | *Bright*     | **Puck**          | *Upbeat*        | **Charon**       | *Informative* |
+| **Kore**      | *Firm*       | **Fenrir**        | *Excitable*     | **Leda**         | *Youthful*    |
+| **Orus**      | *Firm*       | **Aoede**         | *Breezy*        | **Callirrhoe**   | *Easy-going*  |
+| **Autonoe**   | *Bright*     | **Enceladus**     | *Breathy*       | **Iapetus**      | *Clear*       |
+| **Umbriel**   | *Easy-going* | **Algieba**       | *Smooth*        | **Despina**      | *Smooth*      |
+| **Erinome**   | *Clear*      | **Algenib**       | *Gravelly*      | **Rasalgethi**   | *Informative* |
+| **Laomedeia** | *Upbeat*     | **Achernar**      | *Soft*          | **Alnilam**      | *Firm*        |
+| **Schedar**   | *Even*       | **Gacrux**        | *Mature*        | **Pulcherrima**  | *Forward*     |
+| **Achird**    | *Friendly*   | **Zubenelgenubi** | *Casual*        | **Vindemiatrix** | *Gentle*      |
+| **Sadachbia** | *Lively*     | **Sadaltager**    | *Knowledgeable* | **Sulafat**      | *Warm*        |
+
+### 语音映射
+
+当使用 Gemini 模型时，如果传入 OpenAI 语音名称，系统会自动映射到对应的 Gemini 语音：
+
+| OpenAI 语音 | Gemini 语音 | OpenAI 语音 | Gemini 语音  |
+| :-------- | :-------- | :-------- | :--------- |
+| alloy     | Kore      | ash       | Fenrir     |
+| ballad    | Aoede     | coral     | Leda       |
+| echo      | Puck      | fable     | Zephyr     |
+| onyx      | Charon    | nova      | Orus       |
+| sage      | Algieba   | shimmer   | Callirrhoe |
+| verse     | Enceladus | marin     | Despina    |
+| cedar     | Iapetus   |           |            |
+
+## 使用示例
+
+### 标准 TTS 模型（OpenAI）
+
+```curl  theme={null}
+curl https://api.kr777.top/audio/speech \
+  -H "Authorization: Bearer $CAMELAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "tts-1",
+    "input": "The quick brown fox jumped over the lazy dog.",
+    "voice": "alloy"
+  }' \
+  --output speech.mp3
+```
+
+### Gemini TTS 模型（单说话人）
+
+```curl  theme={null}
+curl https://api.kr777.top/audio/speech \
+  -H "Authorization: Bearer $CAMELAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gemini-2.5-flash-preview-tts",
+    "input": "Say cheerfully: Have a wonderful day!",
+    "voice": "Kore",
+    "response_format": "wav"
+  }' \
+  --output speech.wav
+```
+
+### Gemini TTS 模型（多说话人 - 通过提示词控制）
+
+```curl  theme={null}
+curl https://api.kr777.top/audio/speech \
+  -H "Authorization: Bearer $CAMELAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gemini-2.5-flash-preview-tts",
+    "input": "TTS the following conversation between Joe and Jane:\nJoe: How'\''s it going today Jane?\nJane: Not too bad, how about you?",
+    "voice": "Kore",
+    "response_format": "wav",
+    "instructions": "Joe should sound firm and professional, Jane should sound upbeat and friendly"
+  }' \
+  --output conversation.wav
+```
+
+### Python 示例（OpenAI SDK）
+
+```python  theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="your-camelai-api-key",
+    base_url="https://api.kr777.top"
+)
+
+response = client.audio.speech.create(
+    model="tts-1",
+    voice="alloy",
+    input="The quick brown fox jumped over the lazy dog."
+)
+
+response.stream_to_file("speech.mp3")
+```
+
+### Python 示例（Gemini TTS）
+
+```python  theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="your-camelai-api-key",
+    base_url="https://api.kr777.top"
+)
+
+# 单说话人
+response = client.audio.speech.create(
+    model="gemini-2.5-flash-preview-tts",
+    voice="Kore",
+    input="Say cheerfully: Have a wonderful day!",
+    extra_body={
+        "response_format": "wav"
+    }
+)
+
+response.stream_to_file("speech.wav")
+
+# 多说话人对话
+conversation_response = client.audio.speech.create(
+    model="gemini-2.5-flash-preview-tts",
+    voice="Kore",
+    input="""TTS the following conversation between Joe and Jane:
+    Joe: How's it going today Jane?
+    Jane: Not too bad, how about you?""",
+    extra_body={
+        "response_format": "wav",
+        "instructions": "Joe should sound firm, Jane should sound upbeat"
+    }
+)
+
+conversation_response.stream_to_file("conversation.wav")
+```
+
+## 控制语音风格（Gemini 模型）
+
+Gemini TTS 模型支持通过自然语言提示词来控制语音的风格、语调、口音和语速。您可以在 `input` 或 `instructions` 参数中提供指导。
+
+### 单说话人风格控制
+
+```json  theme={null}
+{
+  "model": "gemini-2.5-flash-preview-tts",
+  "input": "Say in a spooky whisper: By the pricking of my thumbs... Something wicked this way comes",
+  "voice": "Enceladus",
+  "response_format": "wav"
+}
+```
+
+### 多说话人风格控制
+
+```json  theme={null}
+{
+  "model": "gemini-2.5-flash-preview-tts",
+  "input": "Speaker1: So... what's on the agenda today?\nSpeaker2: You're never going to guess!",
+  "voice": "Kore",
+  "response_format": "wav",
+  "instructions": "Make Speaker1 sound tired and bored, and Speaker2 sound excited and happy"
+}
+```
+
+### 提示词结构建议
+
+为了获得最佳效果，可以使用以下结构化的提示词格式：
+
+```json  theme={null}
+{
+  "model": "gemini-2.5-flash-preview-tts",
+  "input": "Your transcript here",
+  "voice": "Kore",
+  "instructions": "# AUDIO PROFILE: Character Name\n## Role Description\n\n## THE SCENE: Scene Name\nDescribe the environment and mood\n\n### DIRECTOR'S NOTES\nStyle: Describe the style\nPacing: Describe the pacing\nAccent: Specify the accent"
+}
+```
+
+## 支持的语言
+
+TTS 模型自动检测输入语言。支持以下 24 种语言：
+
+| 语言        | BCP-47 代码     | 语言          | BCP-47 代码 |
+| :-------- | :------------ | :---------- | :-------- |
+| 阿拉伯语（埃及）  | ar-EG         | 德语（德国）      | de-DE     |
+| 英语（美国）    | en-US         | 西班牙语（美国）    | es-US     |
+| 法语（法国）    | fr-FR         | 印地语（印度）     | hi-IN     |
+| 印尼语（印尼）   | id-ID         | 意大利语（意大利）   | it-IT     |
+| 日语（日本）    | ja-JP         | 韩语（韩国）      | ko-KR     |
+| 葡萄牙语（巴西）  | pt-BR         | 俄语（俄罗斯）     | ru-RU     |
+| 荷兰语（荷兰）   | nl-NL         | 波兰语（波兰）     | pl-PL     |
+| 泰语（泰国）    | th-TH         | 土耳其语（土耳其）   | tr-TR     |
+| 越南语（越南）   | vi-VN         | 罗马尼亚语（罗马尼亚） | ro-RO     |
+| 乌克兰语（乌克兰） | uk-UA         | 孟加拉语（孟加拉国）  | bn-BD     |
+| 英语（印度）    | en-IN & hi-IN | 马拉地语（印度）    | mr-IN     |
+| 泰米尔语（印度）  | ta-IN         | 泰卢固语（印度）    | te-IN     |
+
+## 响应格式
+
+### 音频格式
+
+| 格式   | Content-Type | 说明                            | 模型支持      |
+| :--- | :----------- | :---------------------------- | :-------- |
+| mp3  | audio/mpeg   | 默认格式，广泛兼容                     | OpenAI 模型 |
+| opus | audio/opus   | 适合互联网流媒体                      | OpenAI 模型 |
+| aac  | audio/aac    | 数字音频压缩                        | OpenAI 模型 |
+| flac | audio/flac   | 无损音频压缩                        | OpenAI 模型 |
+| wav  | audio/wav    | 未压缩的 WAV 音频                   | 所有模型      |
+| pcm  | audio/pcm    | 原始 PCM 音频（24kHz, 单声道, 16-bit） | 所有模型      |
+
+**注意：** Gemini 模型原生返回 PCM 格式（24kHz, 单声道, 16-bit），系统会自动转换为 WAV 格式。如需其他格式，建议使用 OpenAI 模型。
+
+### 响应体
+
+成功时返回音频流（二进制数据），Content-Type 根据 `response_format` 参数设置。
+
+失败时返回 JSON 错误信息：
+
+```json  theme={null}
+{
+  "error": {
+    "message": "错误描述",
+    "type": "error_type",
+    "code": "error_code"
+  }
+}
+```
+
+## 计费说明
+
+TTS API 按字符数计费：
+
+* 输入文本的字符数作为计费单位
+* 不同模型有不同的价格倍率
+* 最大输入长度：4096 字符
+
+## 限制说明
+
+* 最大输入长度：4096 个字符
+* Gemini TTS 模型仅支持 `wav` 和 `pcm` 输出格式
+* Gemini TTS 模型不支持 `speed` 参数（可通过提示词控制）
+* 上下文窗口限制：32k tokens（Gemini 模型）
+
+## 常见问题
+
+### Q: 如何选择合适的模型？
+
+* 需要快速生成 → `tts-1` 或 `gemini-2.5-flash-preview-tts`
+* 需要高质量音频 → `tts-1-hd`
+* 需要智能语音控制 → `gpt-4o-mini-tts` 或 Gemini TTS 模型
+* 需要多说话人对话 → Gemini TTS 模型
+
+### Q: Gemini TTS 和 OpenAI TTS 有什么区别？
+
+* **Gemini TTS**: 支持通过自然语言提示词控制语音风格，支持多说话人，但仅支持 WAV/PCM 格式
+* **OpenAI TTS**: 支持多种音频格式，有固定的语音选项，速度可通过参数控制
+
+### Q: 如何实现多说话人对话？
+
+使用 Gemini TTS 模型，在 `input` 中使用对话格式，并在 `instructions` 中为每个说话人指定风格：
+
+```json  theme={null}
+{
+  "model": "gemini-2.5-flash-preview-tts",
+  "input": "Speaker1: Hello!\nSpeaker2: Hi there!",
+  "instructions": "Speaker1 should sound professional, Speaker2 should sound casual"
+}
+```
+
+### Q: 支持流式输出吗？
+
+目前 TTS API 返回完整的音频文件，不支持流式输出。
